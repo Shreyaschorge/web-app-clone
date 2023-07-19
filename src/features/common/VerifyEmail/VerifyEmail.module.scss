@@ -1,0 +1,26 @@
+@import './../../../theme/theme';
+
+.verifyEmailSection {
+  width: 320px;
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border-radius: 10px;
+  text-align: center;
+  padding-top: 0px;
+  > svg {
+    height: 200px;
+    width: 200px;
+  }
+}
+.verifyEmailText {
+  font-size: $fontMedium;
+  color: $primaryFontColor;
+  font-weight: bold;
+  max-width: 540px;
+  text-align: center;
+  margin-bottom: 20px;
+}

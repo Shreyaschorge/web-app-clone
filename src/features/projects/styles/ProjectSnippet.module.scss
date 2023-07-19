@@ -1,0 +1,260 @@
+@import './../../../theme/theme';
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+  width: 100%;
+  height: 100%;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.projectEditBlock {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: $backgroundColor;
+  border-radius: 50%;
+  font-size: $fontXSmall;
+  display: flex;
+  flex-direction: row;
+  height: 24px;
+  width: 24px;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
+  z-index: 9;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.projectImage {
+  height: 160px;
+  width: 100%;
+  background-color: $primaryColor;
+  position: relative;
+  transition: all 1s ease;
+  > .projectImageBlock {
+    transition: all 1s ease;
+    left: 16px;
+  }
+
+  &.projectCollapsed {
+    height: 100px;
+    transition: all 1s ease;
+    // > .projectImageBlock {
+    //   left: 50px;
+    // }
+  }
+}
+
+@keyframes collapseImage {
+  0% {
+    height: 160px;
+  }
+  100% {
+    height: 50px;
+  }
+}
+
+@keyframes expandImage {
+  0% {
+    height: 50px;
+  }
+  100% {
+    height: 160px;
+  }
+}
+
+@keyframes translateLeft {
+  0% {
+    left: 16px;
+  }
+  100% {
+    left: 50px;
+  }
+}
+
+@keyframes translateRight {
+  0% {
+    left: 50px;
+  }
+  100% {
+    left: 16px;
+  }
+}
+
+.projectImage:hover {
+  cursor: pointer;
+}
+
+.projectImageFile {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.projectImageBlock {
+  position: absolute;
+  bottom: 12px;
+  left: 7px;
+}
+
+.projectType {
+  font-family: $primaryFontFamily;
+  font-size: $fontXXSmall;
+  color: $light;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.projectName {
+  font-family: $primaryFontFamily;
+  font-size: $fontMedium;
+  color: $light;
+  padding-right: 16px;
+}
+
+.verifiedIcon {
+  display: inline-block;
+  vertical-align: top;
+  width: 0.95em;
+  min-width: 0.95em;
+  line-height: 0.95em;
+}
+
+.topProjectBadge {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--primary-color);
+  border-radius: 14px;
+  padding: 2px 8px 2px 2px;
+  font-weight: 700;
+  font-size: 12px;
+
+  * {
+    color: #fff;
+  }
+
+  .badgeIcon {
+    background-color: white;
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    svg {
+      height: 14px;
+    }
+  }
+}
+
+/* Progress Bar */
+.progressBar {
+  height: 4px;
+  width: 100%;
+  background-color: $dividerColor;
+}
+
+.progressBarHighlight {
+  height: 4px;
+  background-color: $primaryColor;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+.projectInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.targetLocation {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.target {
+  font-family: $primaryFontFamily;
+  font-size: $fontXSmall;
+  color: $primaryFontColor;
+  font-weight: bold;
+  margin-right: 4px;
+}
+
+.projectTPOName {
+  font-family: $primaryFontFamily;
+  font-size: $fontXSmall;
+  color: $primaryFontColor;
+  margin-top: 10px;
+  line-height: 14px;
+  cursor: pointer;
+}
+
+.projectData {
+  max-width: 178px;
+}
+
+.projectCost {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.donateButton {
+  background-color: $primaryColor;
+  min-width: 75px;
+  max-width: 150px;
+  padding: 0 4px;
+  height: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 11px;
+  color: $light;
+  font-family: $primaryFontFamily;
+  font-size: $fontSmall;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.donateButton:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.perTreeCost {
+  font-family: $secondaryFontFamily;
+  font-size: $fontXSmall;
+  color: $primaryFontColor;
+  margin-top: 6px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.perTreeCost > span {
+  font-family: $primaryFontFamily;
+  font-weight: 400;
+}
+
+.topProjectReportsContainer {
+  margin: 10px;
+}
+
+.topProjectPopupContainer {
+  margin: 10px;
+  width: 300px;
+}

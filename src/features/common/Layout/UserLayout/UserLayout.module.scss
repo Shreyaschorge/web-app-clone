@@ -1,0 +1,346 @@
+@import '../../../../theme/theme';
+
+.profilePageContainer {
+  margin-top: -45px;
+  margin-left: 55px;
+  position: relative;
+  display: flex;
+  padding-left: 60px;
+  font-family: $primaryFontFamily;
+  & .hamburgerIcon {
+    display: none;
+  }
+  @include xsPhoneView {
+    padding-left: 0;
+    margin-left: 0;
+    & .hamburgerIcon {
+      display: block;
+      position: fixed;
+      top: 100px;
+      left: 20px;
+      z-index: 10;
+      height: 42px;
+      width: 42px;
+      background-color: $backgroundColorDark;
+      border-radius: 10px;
+      svg {
+        path {
+          fill: $primaryFontColor;
+        }
+        rect {
+          stroke: $primaryFontColor;
+        }
+      }
+    }
+    & .profilePageTitle {
+      padding-left: 40px;
+    }
+  }
+}
+.profilePageWrapper {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.profileImpersonation {
+  margin-top: 58px;
+}
+
+// Styles for Sidebar
+
+.navlink button,
+.navlinkSubMenu {
+  display: none;
+  font-family: inherit;
+}
+
+ .sidebar {
+  width: 109px;
+  position: fixed;
+  top: 80px;
+  left: 0px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 80px);
+  overflow-y: scroll;
+  scrollbar-width: none;
+  justify-content: space-between;
+  box-shadow: rgba(150, 150, 150, $alpha: 0.2) 0px 0px 4px;
+  background-color: $light;
+  transition: width 0.3s ease-in-out;
+  z-index: 100;
+  background-color: $backgroundColor;
+  color: $primaryFontColor;
+  font-family: $primaryFontFamily;
+    //edit scroll bar for webkit browsers
+    &::-webkit-scrollbar {
+      width: 0px;
+    }
+    & {
+      .supportPinContainer {
+          display: none;
+        }
+      }
+  
+    &:hover{
+      .supportPinContainer {
+          .pinValue {
+            width: 33px;
+            font-weight: bold;
+          }
+          .resetPin{
+            display: none;
+          }
+          &:hover {
+            .resetPin {
+              display: block;
+              position: absolute;
+              bottom: 30px;
+              right: -21px;
+              height: 23px;
+              width: 67px;
+              background-color: $primaryColor;
+              color: $light;
+              font-family: inherit;
+              text-align: center;
+              border-radius: 4px;
+            }
+          }
+          position: relative;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          gap:12px;
+          margin-right: 60px;
+          cursor: auto;
+         }
+       
+      
+    }
+  @include xsPhoneView {
+    width: 300px;
+    & .navlink {
+      padding: 16px 20px;
+      justify-content: space-between;
+    }
+    & .navlink button {
+      display: block;
+    }
+    & .navlinkSubMenu {
+      display: flex;
+    }
+    &.menuClosed {
+      width: 0px;
+    }
+    & {
+      .navlink .supportPinContainer {
+      display: flex;
+      margin-right: 102px;
+      gap:10px
+    }
+  }
+  }
+  @include smTabletView {
+    top: 80px;
+    & .closeMenu {
+      display: none;
+    }
+    &:hover {
+      width: 300px !important;
+    }
+    &:hover .navlink {
+      padding: 16px 20px;
+      justify-content: space-between;
+    }
+    &:hover .navlink button {
+      display: block;
+    }
+    &:hover .navlinkSubMenu {
+      display: flex;
+    }
+  }
+}
+
+
+.sidebarModified {
+  width: 109px;
+  position: fixed;
+  top: 120px;
+  left: 0px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 120px);
+  overflow-y: scroll;
+  justify-content: space-between;
+  box-shadow: rgba(150, 150, 150, $alpha: 0.2) 0px 0px 4px;
+  background-color: $light;
+  transition: width 0.3s ease-in-out;
+  z-index: 100;
+  background-color: $backgroundColor;
+  color: $primaryFontColor;
+  font-family: $primaryFontFamily;
+  & {
+    .navlink {
+      .supportPinContainer {
+        display: none;
+       
+      }
+    }
+  }
+  @include xsPhoneView {
+    width: 300px;
+    & .navlink {
+      padding: 16px 20px;
+      justify-content: space-between;
+    }
+    & .navlink button {
+      display: block;
+    }
+    & .navlinkSubMenu {
+      display: flex;
+    }
+    &.menuClosed {
+      width: 0px;
+    }
+  }
+  
+  @include smTabletView {
+    top: 120px;
+    & .closeMenu {
+      display: none;
+    }
+    &:hover {
+      width: 300px !important;
+    }
+    &:hover .navlink {
+      padding: 16px 20px;
+      justify-content: flex-start;
+    }
+    &:hover .navlink button {
+      display: block;
+    }
+    &:hover .navlinkSubMenu {
+      display: flex;
+    }
+  }
+}
+
+.navLinksContainer {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.navlink {
+  padding: 16px 8px;
+  text-align: left;
+  display: flex;
+  justify-content: center;
+  color: $primaryFontColor;
+  > svg > path {
+    fill: $primaryFontColor;
+  }
+  &:hover {
+    cursor: pointer;
+    > svg > path , > svg > g > path{
+      fill: $primaryColor;
+    }
+    
+  }
+  button {
+    font-size: 14px;
+    font-weight: 400;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  &:hover{
+    color: $primaryColor;
+  }
+}
+
+.navlinkActive {
+  // background-color: rgba(104, 176, 48, $alpha: 0.2);
+  button {
+    font-weight: 600;
+  }
+  > svg > path {
+    fill: $primaryColor;
+  }
+  .navlinkTitle {
+    color: $primaryColor;
+  }
+}
+.navlinkActiveSubMenu {
+  color: rgba(104, 176, 48);
+  font-weight: 600;
+}
+.navlinkTitle {
+  flex-grow: 1;
+  text-align: left;
+  margin-left: 12px;
+  color: $primaryFontColor;
+  &:hover {
+    cursor: pointer;
+    > svg > path , > svg > g > path{
+      fill: $primaryColor;
+    }
+    color: $primaryColor;
+  }
+  span {
+    background-color: $primaryColor;
+    color: $light;
+    padding: 4px 8px;
+    margin-left: 8px;
+    border-radius: 4px;
+  }
+}
+.subMenuArrow {
+  svg {
+    path {
+      fill: $primaryFontColor;
+    }
+  }
+}
+.navlinkSubMenu {
+  padding: 16px 20px;
+  text-align: left;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 56px;
+  &:hover {
+    cursor: pointer;
+    background-color: $backgroundColorDark;
+  }
+  span {
+    background-color: $primaryColor;
+    color: $light;
+    padding: 4px 8px;
+    margin-left: 8px;
+    border-radius: 4px;
+  }
+}
+
+.widgetIFrame {
+  min-height: 100vh;
+  width: 100%;
+}
+
+// @include lgLaptopView {
+//   .sidebar {
+//     width: 300px;
+//   }
+//   .navlink button {
+//     display: block;
+//   }
+//   .navlink {
+//     padding: 16px 20px;
+//     justify-content: space-between;
+//   }
+//   .profilePageContainer {
+//     padding-left: 300px;
+//   }
+//   .navlinkSubMenu {
+//     display: flex;
+//   }
+// }

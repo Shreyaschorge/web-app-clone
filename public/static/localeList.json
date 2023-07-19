@@ -1,0 +1,30 @@
+[
+    {
+        "key":"en",
+        "value":"en_US"
+    },
+    {
+        "key":"cs",
+        "value":"cs_CZ"
+    },
+    {
+        "key":"de",
+        "value":"de_DE"
+    },
+    {
+        "key":"es",
+        "value":"es_ES"
+    },
+    {
+        "key":"fr",
+        "value":"fr_FR"
+    },
+    {
+        "key":"it",
+        "value":"it_IT"
+    },
+    {
+        "key":"pt-BR",
+        "value":"pt_BR"
+    }
+]
