@@ -1,8 +1,8 @@
-import React, { ReactElement } from 'react';
-import UserProfileLoader from '../src/features/common/ContentLoaders/UserProfile/UserProfile';
-import { useRouter } from 'next/router';
-import { useUserProps } from '../src/features/common/Layout/UserPropsContext';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import React, { ReactElement } from "react";
+import UserProfileLoader from "../src/features/common/ContentLoaders/UserProfile/UserProfile";
+import { useRouter } from "next/router";
+import { useUserProps } from "../src/features/common/Layout/UserPropsContext";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 function Login(): ReactElement {
   const router = useRouter();
@@ -22,14 +22,14 @@ function Login(): ReactElement {
     async function loadFunction() {
       // redirect
       if (user) {
-        if (localStorage.getItem('redirectLink')) {
-          const redirectLink = localStorage.getItem('redirectLink');
+        if (localStorage.getItem("redirectLink")) {
+          const redirectLink = localStorage.getItem("redirectLink");
           if (redirectLink) {
-            localStorage.removeItem('redirectLink');
+            localStorage.removeItem("redirectLink");
             router.push(redirectLink);
           }
         } else {
-          router.push('/t/[id]', `/t/${user.slug}`, { shallow: true });
+          router.push("/t/[id]", `/t/${user.slug}`, { shallow: true });
         }
       }
     }
@@ -38,13 +38,13 @@ function Login(): ReactElement {
         loadFunction();
       } else if (
         user === null &&
-        (isAuthenticated || auth0Error?.message === '401')
+        (isAuthenticated || auth0Error?.message === "401")
       ) {
         // wait for context to redirect to complete signup
       } else {
         loginWithRedirect({
-          redirectUri: `${process.env.NEXTAUTH_URL}/login`,
-          ui_locales: localStorage.getItem('language') || 'en',
+          redirectUri: "http://salesforce.plantingparty.org/login",
+          ui_locales: localStorage.getItem("language") || "en",
         });
       }
     }
@@ -65,27 +65,27 @@ export async function getStaticProps({ locale }) {
       ...(await serverSideTranslations(
         locale,
         [
-          'bulkCodes',
-          'common',
-          'country',
-          'donate',
-          'donationLink',
-          'editProfile',
-          'giftfunds',
-          'leaderboard',
-          'managePayouts',
-          'manageProjects',
-          'maps',
-          'me',
-          'planet',
-          'planetcash',
-          'redeem',
-          'registerTrees',
-          'tenants',
-          'treemapper',
+          "bulkCodes",
+          "common",
+          "country",
+          "donate",
+          "donationLink",
+          "editProfile",
+          "giftfunds",
+          "leaderboard",
+          "managePayouts",
+          "manageProjects",
+          "maps",
+          "me",
+          "planet",
+          "planetcash",
+          "redeem",
+          "registerTrees",
+          "tenants",
+          "treemapper",
         ],
         null,
-        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
+        ["en", "de", "fr", "es", "it", "pt-BR", "cs"]
       )),
     },
   };

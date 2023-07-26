@@ -1,29 +1,29 @@
-import React, { ReactElement, useState } from 'react';
-import { useRouter } from 'next/router';
-import styles from '../../../../src/features/user/CompleteSignup/CompleteSignup.module.scss';
-import ToggleSwitch from '../../common/InputTypes/ToggleSwitch';
+import React, { ReactElement, useState } from "react";
+import { useRouter } from "next/router";
+import styles from "../../../../src/features/user/CompleteSignup/CompleteSignup.module.scss";
+import ToggleSwitch from "../../common/InputTypes/ToggleSwitch";
 import {
   Snackbar,
   Alert as MuiAlert,
   MenuItem,
   styled,
   TextField,
-} from '@mui/material';
-import AutoCompleteCountry from '../../common/InputTypes/AutoCompleteCountry';
-import COUNTRY_ADDRESS_POSTALS from '../../../utils/countryZipCode';
-import { useForm, Controller } from 'react-hook-form';
-import CancelIcon from '../../../../public/assets/images/icons/CancelIcon';
-import { selectUserType } from '../../../utils/selectUserType';
-import { getStoredConfig } from '../../../utils/storeConfig';
-import { useUserProps } from '../../common/Layout/UserPropsContext';
-import themeProperties from '../../../theme/themeProperties';
-import { ThemeContext } from '../../../theme/themeContext';
-import GeocoderArcGIS from 'geocoder-arcgis';
-import { postRequest } from '../../../utils/apiRequests/api';
-import { ErrorHandlingContext } from '../../common/Layout/ErrorHandlingContext';
-import { useTranslation, Trans } from 'next-i18next';
-import InlineFormDisplayGroup from '../../common/Layout/Forms/InlineFormDisplayGroup';
-import { handleError, APIError } from '@planet-sdk/common';
+} from "@mui/material";
+import AutoCompleteCountry from "../../common/InputTypes/AutoCompleteCountry";
+import COUNTRY_ADDRESS_POSTALS from "../../../utils/countryZipCode";
+import { useForm, Controller } from "react-hook-form";
+import CancelIcon from "../../../../public/assets/images/icons/CancelIcon";
+import { selectUserType } from "../../../utils/selectUserType";
+import { getStoredConfig } from "../../../utils/storeConfig";
+import { useUserProps } from "../../common/Layout/UserPropsContext";
+import themeProperties from "../../../theme/themeProperties";
+import { ThemeContext } from "../../../theme/themeContext";
+import GeocoderArcGIS from "geocoder-arcgis";
+import { postRequest } from "../../../utils/apiRequests/api";
+import { ErrorHandlingContext } from "../../common/Layout/ErrorHandlingContext";
+import { useTranslation, Trans } from "next-i18next";
+import InlineFormDisplayGroup from "../../common/Layout/Forms/InlineFormDisplayGroup";
+import { handleError, APIError } from "@planet-sdk/common";
 
 const Alert = styled(MuiAlert)(({ theme }) => {
   return {
@@ -33,13 +33,13 @@ const Alert = styled(MuiAlert)(({ theme }) => {
 
 const MuiTextField = styled(TextField)(() => {
   return {
-    width: '100%',
+    width: "100%",
   };
 });
 
 export default function CompleteSignup(): ReactElement | null {
   const router = useRouter();
-  const { i18n, t, ready } = useTranslation(['editProfile', 'donate']);
+  const { i18n, t, ready } = useTranslation(["editProfile", "donate"]);
   const { setErrors, redirect } = React.useContext(ErrorHandlingContext);
   const [addressSugggestions, setaddressSugggestions] = React.useState([]);
   const [isProcessing, setIsProcessing] = React.useState<boolean>(false);
@@ -54,7 +54,7 @@ export default function CompleteSignup(): ReactElement | null {
   const suggestAddress = (value) => {
     if (value.length > 3) {
       geocoder
-        .suggest(value, { category: 'Address', countryCode: country })
+        .suggest(value, { category: "Address", countryCode: country })
         .then((result) => {
           const filterdSuggestions = result.suggestions.filter((suggestion) => {
             return !suggestion.isCollection;
@@ -66,15 +66,15 @@ export default function CompleteSignup(): ReactElement | null {
   };
   const getAddress = (value) => {
     geocoder
-      .findAddressCandidates(value, { outfields: '*' })
+      .findAddressCandidates(value, { outfields: "*" })
       .then((result) => {
-        setValue('address', result.candidates[0].attributes.ShortLabel, {
+        setValue("address", result.candidates[0].attributes.ShortLabel, {
           shouldValidate: true,
         });
-        setValue('city', result.candidates[0].attributes.City, {
+        setValue("city", result.candidates[0].attributes.City, {
           shouldValidate: true,
         });
-        setValue('zipCode', result.candidates[0].attributes.Postal, {
+        setValue("zipCode", result.candidates[0].attributes.Postal, {
           shouldValidate: true,
         });
         setaddressSugggestions([]);
@@ -91,23 +91,23 @@ export default function CompleteSignup(): ReactElement | null {
     setValue,
     watch,
     formState: { errors },
-  } = useForm({ mode: 'onBlur' });
+  } = useForm({ mode: "onBlur" });
 
   const { user, setUser, auth0User, contextLoaded, logoutUser, token } =
     useUserProps();
 
-  const isPrivate = watch('isPrivate');
+  const isPrivate = watch("isPrivate");
   const [submit, setSubmit] = React.useState(false);
   React.useEffect(() => {
     async function loadFunction() {
       if (token) {
         if (user && user.slug) {
-          if (typeof window !== 'undefined') {
+          if (typeof window !== "undefined") {
             router.push(`/t/${user.slug}`);
           }
         }
       } else {
-        router.push('/', undefined, { shallow: true });
+        router.push("/", undefined, { shallow: true });
       }
     }
     if (contextLoaded) {
@@ -124,18 +124,18 @@ export default function CompleteSignup(): ReactElement | null {
     event?: React.SyntheticEvent,
     reason?: string
   ) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
   };
 
-  const [type, setAccountType] = useState('individual');
-  const [snackbarMessage, setSnackbarMessage] = useState('OK');
-  const [severity, setSeverity] = useState('info');
+  const [type, setAccountType] = useState("individual");
+  const [snackbarMessage, setSnackbarMessage] = useState("OK");
+  const [severity, setSeverity] = useState("info");
   const [requestSent, setRequestSent] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState<boolean | null>(null);
-  const [country, setCountry] = useState('');
+  const [country, setCountry] = useState("");
 
   const [postalRegex, setPostalRegex] = React.useState(
     COUNTRY_ADDRESS_POSTALS.filter((item) => item.abbrev === country)[0]?.postal
@@ -155,17 +155,17 @@ export default function CompleteSignup(): ReactElement | null {
       setRequestSent(false);
       // successful signup -> goto me page
       setUser(res);
-      setSnackbarMessage(ready ? t('editProfile:profileCreated') : '');
-      setSeverity('success');
+      setSnackbarMessage(ready ? t("editProfile:profileCreated") : "");
+      setSeverity("success");
       handleSnackbarOpen();
 
-      if (typeof window !== 'undefined') {
-        router.push('/t/[id]', `/t/${res.slug}`);
+      if (typeof window !== "undefined") {
+        router.push("/t/[id]", `/t/${res.slug}`);
       }
     } catch (err) {
       setIsProcessing(false);
       setErrors(handleError(err as APIError));
-      redirect('/login');
+      redirect("/login");
     }
   };
 
@@ -178,19 +178,19 @@ export default function CompleteSignup(): ReactElement | null {
   const profileTypes = [
     {
       id: 1,
-      title: ready ? t('editProfile:individual') : '',
-      value: 'individual',
+      title: ready ? t("editProfile:individual") : "",
+      value: "individual",
     },
     {
       id: 2,
-      title: ready ? t('editProfile:organization') : '',
-      value: 'organization',
+      title: ready ? t("editProfile:organization") : "",
+      value: "organization",
     },
-    { id: 3, title: ready ? t('editProfile:tpo') : '', value: 'tpo' },
+    { id: 3, title: ready ? t("editProfile:tpo") : "", value: "tpo" },
     {
       id: 4,
-      title: ready ? t('editProfile:education') : '',
-      value: 'education',
+      title: ready ? t("editProfile:education") : "",
+      value: "education",
     },
   ];
 
@@ -236,11 +236,11 @@ export default function CompleteSignup(): ReactElement | null {
             className={requestSent ? styles.signupRequestSent : styles.signup}
             style={{
               backgroundColor:
-                theme === 'theme-light'
+                theme === "theme-light"
                   ? themeProperties.light.light
                   : themeProperties.dark.backgroundColor,
               color:
-                theme === 'theme-light'
+                theme === "theme-light"
                   ? themeProperties.light.primaryFontColor
                   : themeProperties.dark.primaryFontColor,
             }}
@@ -248,19 +248,21 @@ export default function CompleteSignup(): ReactElement | null {
             {/* header */}
             <div className={styles.header}>
               <div
-                onClick={() => logoutUser(`${process.env.NEXTAUTH_URL}/`)}
+                onClick={() =>
+                  logoutUser("http://salesforce.plantingparty.org")
+                }
                 className={styles.headerBackIcon}
               >
                 <CancelIcon color={styles.primaryFontColor} />
               </div>
               <div className={styles.headerTitle}>
-                {t('editProfile:signUpText')}
+                {t("editProfile:signUpText")}
               </div>
             </div>
 
             {/* type of account buttons */}
             <MuiTextField
-              label={t('editProfile:iamA')}
+              label={t("editProfile:iamA")}
               select
               defaultValue={profileTypes[0].value}
             >
@@ -280,14 +282,14 @@ export default function CompleteSignup(): ReactElement | null {
                 name="firstname"
                 control={control}
                 rules={{ required: true }}
-                defaultValue={auth0User?.given_name || ''}
+                defaultValue={auth0User?.given_name || ""}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <MuiTextField
-                    label={t('donate:firstName')}
+                    label={t("donate:firstName")}
                     error={errors.firstname !== undefined}
                     helperText={
                       errors.firstname !== undefined &&
-                      t('donate:firstNameRequired')
+                      t("donate:firstNameRequired")
                     }
                     onChange={onChange}
                     value={value}
@@ -299,14 +301,14 @@ export default function CompleteSignup(): ReactElement | null {
                 name="lastname"
                 control={control}
                 rules={{ required: true }}
-                defaultValue={auth0User?.family_name || ''}
+                defaultValue={auth0User?.family_name || ""}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <MuiTextField
-                    label={t('donate:lastName')}
+                    label={t("donate:lastName")}
                     error={errors.lastname !== undefined}
                     helperText={
                       errors.lastname !== undefined &&
-                      t('donate:lastNameRequired')
+                      t("donate:lastNameRequired")
                     }
                     onChange={onChange}
                     value={value}
@@ -316,20 +318,20 @@ export default function CompleteSignup(): ReactElement | null {
               />
             </InlineFormDisplayGroup>
 
-            {type !== 'individual' ? (
+            {type !== "individual" ? (
               <Controller
                 name="name"
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <MuiTextField
-                    label={t('editProfile:profileName', {
+                    label={t("editProfile:profileName", {
                       type: selectUserType(type, t),
                     })}
                     error={errors.name !== undefined}
                     helperText={
                       errors.name !== undefined &&
-                      t('editProfile:nameValidation')
+                      t("editProfile:nameValidation")
                     }
                     onChange={onChange}
                     value={value}
@@ -341,11 +343,11 @@ export default function CompleteSignup(): ReactElement | null {
 
             <MuiTextField
               defaultValue={auth0User?.email}
-              label={t('donate:email')}
+              label={t("donate:email")}
               disabled
             />
 
-            {type === 'tpo' ? (
+            {type === "tpo" ? (
               <>
                 <Controller
                   name="address"
@@ -353,11 +355,11 @@ export default function CompleteSignup(): ReactElement | null {
                   rules={{ required: true }}
                   render={({ field: { onChange, value, onBlur } }) => (
                     <MuiTextField
-                      label={t('donate:address')}
+                      label={t("donate:address")}
                       error={errors.address !== undefined}
                       helperText={
                         errors.address !== undefined &&
-                        t('donate:addressRequired')
+                        t("donate:addressRequired")
                       }
                       onChange={(event) => {
                         suggestAddress(event.target.value);
@@ -378,7 +380,7 @@ export default function CompleteSignup(): ReactElement | null {
                         {addressSugggestions.map((suggestion) => {
                           return (
                             <div
-                              key={'suggestion' + suggestion_counter++}
+                              key={"suggestion" + suggestion_counter++}
                               onMouseDown={() => {
                                 getAddress(suggestion.text);
                               }}
@@ -397,18 +399,18 @@ export default function CompleteSignup(): ReactElement | null {
                     control={control}
                     rules={{ required: true }}
                     defaultValue={
-                      getStoredConfig('loc').city === 'T1' ||
-                      getStoredConfig('loc').city === 'XX' ||
-                      getStoredConfig('loc').city === ''
-                        ? ''
-                        : getStoredConfig('loc').city
+                      getStoredConfig("loc").city === "T1" ||
+                      getStoredConfig("loc").city === "XX" ||
+                      getStoredConfig("loc").city === ""
+                        ? ""
+                        : getStoredConfig("loc").city
                     }
                     render={({ field: { onChange, value, onBlur } }) => (
                       <MuiTextField
-                        label={t('donate:city')}
+                        label={t("donate:city")}
                         error={errors.city !== undefined}
                         helperText={
-                          errors.city !== undefined && t('donate:cityRequired')
+                          errors.city !== undefined && t("donate:cityRequired")
                         }
                         onChange={onChange}
                         value={value}
@@ -421,19 +423,19 @@ export default function CompleteSignup(): ReactElement | null {
                     control={control}
                     rules={{ required: true, pattern: postalRegex }}
                     defaultValue={
-                      getStoredConfig('loc').postalCode === 'T1' ||
-                      getStoredConfig('loc').postalCode === 'XX' ||
-                      getStoredConfig('loc').postalCode === ''
-                        ? ''
-                        : getStoredConfig('loc').postalCode
+                      getStoredConfig("loc").postalCode === "T1" ||
+                      getStoredConfig("loc").postalCode === "XX" ||
+                      getStoredConfig("loc").postalCode === ""
+                        ? ""
+                        : getStoredConfig("loc").postalCode
                     }
                     render={({ field: { onChange, value, onBlur } }) => (
                       <MuiTextField
-                        label={t('donate:zipCode')}
+                        label={t("donate:zipCode")}
                         error={errors.zipCode !== undefined}
                         helperText={
                           errors.zipCode !== undefined &&
-                          t('donate:zipCodeAlphaNumValidation')
+                          t("donate:zipCodeAlphaNumValidation")
                         }
                         onChange={onChange}
                         value={value}
@@ -445,15 +447,15 @@ export default function CompleteSignup(): ReactElement | null {
               </>
             ) : null}
             <AutoCompleteCountry
-              label={t('donate:country')}
+              label={t("donate:country")}
               name="country"
               onChange={setCountry}
               defaultValue={
-                getStoredConfig('loc').countryCode === 'T1' ||
-                getStoredConfig('loc').countryCode === 'XX' ||
-                getStoredConfig('loc').countryCode === ''
-                  ? ''
-                  : getStoredConfig('loc').countryCode
+                getStoredConfig("loc").countryCode === "T1" ||
+                getStoredConfig("loc").countryCode === "XX" ||
+                getStoredConfig("loc").countryCode === ""
+                  ? ""
+                  : getStoredConfig("loc").countryCode
               }
             />
             <div className={styles.inlineToggleGroup}>
@@ -461,14 +463,14 @@ export default function CompleteSignup(): ReactElement | null {
                 <label
                   htmlFor="isPrivate"
                   className={styles.mainText}
-                  style={{ cursor: 'pointer' }}
+                  style={{ cursor: "pointer" }}
                 >
-                  {t('editProfile:privateAccount')}
-                </label>{' '}
+                  {t("editProfile:privateAccount")}
+                </label>{" "}
                 <br />
                 {isPrivate && (
                   <label className={styles.isPrivateAccountText}>
-                    {t('editProfile:privateAccountTxt')}
+                    {t("editProfile:privateAccountTxt")}
                   </label>
                 )}
               </div>
@@ -480,7 +482,7 @@ export default function CompleteSignup(): ReactElement | null {
                   <ToggleSwitch
                     checked={value}
                     onChange={onChange}
-                    inputProps={{ 'aria-label': 'secondary checkbox' }}
+                    inputProps={{ "aria-label": "secondary checkbox" }}
                     id="isPrivate"
                   />
                 )}
@@ -489,8 +491,8 @@ export default function CompleteSignup(): ReactElement | null {
 
             <div className={styles.inlineToggleGroup}>
               <div className={styles.mainText}>
-                <label htmlFor={'getNews'} style={{ cursor: 'pointer' }}>
-                  {t('editProfile:subscribe')}
+                <label htmlFor={"getNews"} style={{ cursor: "pointer" }}>
+                  {t("editProfile:subscribe")}
                 </label>
               </div>
               <Controller
@@ -502,7 +504,7 @@ export default function CompleteSignup(): ReactElement | null {
                     <ToggleSwitch
                       checked={value}
                       onChange={(e) => onChange(e.target.checked)}
-                      inputProps={{ 'aria-label': 'secondary checkbox' }}
+                      inputProps={{ "aria-label": "secondary checkbox" }}
                       id="getNews"
                     />
                   );
@@ -513,16 +515,16 @@ export default function CompleteSignup(): ReactElement | null {
             <div>
               <div className={styles.inlineToggleGroup}>
                 <div className={styles.mainText}>
-                  <label htmlFor={'terms'} style={{ cursor: 'pointer' }}>
+                  <label htmlFor={"terms"} style={{ cursor: "pointer" }}>
                     <Trans i18nKey="editProfile:termAndCondition">
                       <a
                         className={styles.termsLink}
                         rel="noopener noreferrer"
                         href={`https://pp.eco/legal/${i18n.language}/terms`}
-                        target={'_blank'}
+                        target={"_blank"}
                       >
                         Terms and Conditions
-                      </a>{' '}
+                      </a>{" "}
                       of the Plant-for-the-Planet platform.
                     </Trans>
                   </label>
@@ -532,20 +534,20 @@ export default function CompleteSignup(): ReactElement | null {
                   onChange={(e) => {
                     handleTermsAndCondition(e.target.checked);
                   }}
-                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                  inputProps={{ "aria-label": "secondary checkbox" }}
                   id="terms"
                 />
               </div>
-              {!acceptTerms && typeof acceptTerms !== 'object' && (
+              {!acceptTerms && typeof acceptTerms !== "object" && (
                 <div className={styles.termsError}>
-                  {t('editProfile:termAndConditionError')}
+                  {t("editProfile:termAndConditionError")}
                 </div>
               )}
             </div>
             <div className={styles.horizontalLine} />
 
             <button
-              id={'signupCreate'}
+              id={"signupCreate"}
               className={styles.saveButton}
               onClick={handleSubmit(createButtonClicked)}
               disabled={isProcessing}
@@ -553,7 +555,7 @@ export default function CompleteSignup(): ReactElement | null {
               {submit ? (
                 <div className={styles.spinner}></div>
               ) : (
-                t('editProfile:createAccount')
+                t("editProfile:createAccount")
               )}
             </button>
           </div>

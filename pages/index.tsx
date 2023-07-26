@@ -58,8 +58,6 @@ export default function Donate({
     }
   }, [directGift]);
 
-  console.log(process.env.NEXTAUTH_URL);
-
   // Deprecation Notice: This route will be removed in next major version
   React.useEffect(() => {
     if (router.query.p) {

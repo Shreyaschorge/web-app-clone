@@ -39,9 +39,9 @@ const scheme =
     ? process.env.SCHEME
     : 'https';
 
-const nextauthUrl = process.env.NEXTAUTH_URL
-  ? `${process.env.NEXTAUTH_URL}`
-  : `${scheme}://${process.env.VERCEL_URL}`;
+// const nextauthUrl = 'http://salesforce.plantingparty.org'
+//   ? `${'http://salesforce.plantingparty.org'}`
+//   : `${scheme}://${process.env.VERCEL_URL}`;
 
 const hasAssetPrefix =
   process.env.ASSET_PREFIX !== '' && process.env.ASSET_PREFIX !== undefined;
@@ -116,7 +116,7 @@ const nextConfig = {
     SCHEME: scheme,
     API_ENDPOINT: `${scheme}://${process.env.API_ENDPOINT}`,
     CDN_URL: `${scheme}://${process.env.CDN_URL}`,
-    NEXTAUTH_URL: nextauthUrl,
+    // NEXTAUTH_URL: nextauthUrl,
     VERCEL_URL: process.env.VERCEL_URL,
     SITE_IMAGERY_API_URL: SITE_IMAGERY_API_URL,
     WIDGET_URL: process.env.WIDGET_URL,

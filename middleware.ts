@@ -24,7 +24,6 @@ export default async function middleware(req: NextRequest) {
   if (url.pathname.startsWith(`/_sites`)) {
     url.pathname = `/404`;
   } else {
-    console.log('URL 2', req.nextUrl.href);
     // rewrite to the current subdomain under the pages/sites folder
     url.pathname = `/_sites/${data.subdomain}${url.pathname}`;
   }
