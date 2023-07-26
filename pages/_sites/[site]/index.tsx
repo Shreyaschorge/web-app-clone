@@ -1,10 +1,10 @@
-import { useRouter } from 'next/router';
-import { Layout, Page, Text, Link, List } from '@vercel/examples-ui';
+import { useRouter } from "next/router";
+import { Layout, Page, Text, Link, List } from "@vercel/examples-ui";
 
 import {
   getHostnameDataBySubdomain,
   getSubdomainPaths,
-} from '../../../src/utils/db';
+} from "../../../src/utils/db";
 
 export default function Index(props) {
   const router = useRouter();
@@ -19,7 +19,7 @@ export default function Index(props) {
   }
 
   return (
-    <Page style={{ marginTop: '300px' }}>
+    <Page style={{ marginTop: "300px" }}>
       <Text variant="h1" className="mb-6">
         {props.name}
       </Text>
@@ -34,27 +34,20 @@ export default function Index(props) {
       </Text>
       <List>
         <li>
-          <Link href="https://subdomain-10.vercel.app">
-            subdomain-10.vercel.app
-          </Link>
+          <Link href="https://stern.plantingparty.org">stern</Link>
         </li>
         <li>
-          <Link href="https://subdomain-2.vercel.sh">
-            subdomain-2.vercel.sh
-          </Link>
+          <Link href="https://pampers.plantingparty.org">pampers</Link>
         </li>
+
         <li>
-          <Link href="https://subdomain-3.vercel.sh">
+          <Link href="https://pampers.plantingparty.org">
             subdomain-3.vercel.sh
           </Link>
         </li>
         <li>
-          <Link href="https://custom-domain-1.com">custom-domain-1.com</Link>{' '}
-          (maps to{' '}
-          <Link href="https://subdomain-1.vercel.sh">
-            subdomain-1.vercel.sh
-          </Link>
-          )
+          <Link href="https://plantingparty.org">custom-domain-1.com</Link>{" "}
+          (maps to <Link href="https://stern.plantingparty.org">stern</Link>)
         </li>
       </List>
     </Page>
