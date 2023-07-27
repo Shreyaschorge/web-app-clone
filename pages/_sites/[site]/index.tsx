@@ -58,13 +58,10 @@ export default function Donate({
   const [showdirectGift, setShowDirectGift] = React.useState(true);
   const [internalLanguage, setInternalLanguage] = React.useState("");
 
-  console.log(
-    "==>",
-    pageProps.site,
-    initialized,
-    currencyCode,
-    setCurrencyCode
-  );
+  React.useEffect(() => {
+    console.log("==> I  rann");
+    router.push("/");
+  }, []);
 
   React.useEffect(() => {
     const getdirectGift = localStorage.getItem("directGift");
