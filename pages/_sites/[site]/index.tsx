@@ -14,7 +14,6 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import nextI18NextConfig from "../../../next-i18next.config";
 import { handleError, APIError } from "@planet-sdk/common";
-
 import {
   getHostnameDataBySubdomain,
   getSubdomainPaths,
@@ -24,8 +23,19 @@ interface Props {
   initialized: Boolean;
   currencyCode: any;
   setCurrencyCode: Function;
+  pageProps: {
+    site: {
+      name: string;
+      description: string;
+      subdomain: string;
+      customDomain: string;
+      defaultForPreview: false;
+    };
+  };
 }
-export default function Index({
+
+export default function Donate({
+  pageProps,
   initialized,
   currencyCode,
   setCurrencyCode,
@@ -47,6 +57,15 @@ export default function Index({
   const [directGift, setDirectGift] = React.useState(null);
   const [showdirectGift, setShowDirectGift] = React.useState(true);
   const [internalLanguage, setInternalLanguage] = React.useState("");
+
+  console.log(
+    "==>",
+    pageProps.site,
+    initialized,
+    currencyCode,
+    setCurrencyCode
+  );
+
   React.useEffect(() => {
     const getdirectGift = localStorage.getItem("directGift");
     if (getdirectGift) {
@@ -154,9 +173,38 @@ export async function getStaticPaths() {
   };
 }
 
-export async function getStaticProps({ params: { site } }) {
+export async function getStaticProps(props: any) {
+  console.log("\n", props.params, "\n");
+
   return {
-    props: await getHostnameDataBySubdomain(site),
-    revalidate: 3600, // set revalidate interval of 1 hour
+    props: {
+      ...(await serverSideTranslations(
+        props.locale,
+        [
+          "bulkCodes",
+          "common",
+          "country",
+          "donate",
+          "donationLink",
+          "editProfile",
+          "giftfunds",
+          "leaderboard",
+          "managePayouts",
+          "manageProjects",
+          "maps",
+          "me",
+          "planet",
+          "planetcash",
+          "redeem",
+          "registerTrees",
+          "tenants",
+          "treemapper",
+        ],
+        nextI18NextConfig,
+        ["en", "de", "fr", "es", "it", "pt-BR", "cs"]
+      )),
+      site: await getHostnameDataBySubdomain(props.params.site),
+    },
+    revalidate: 3600,
   };
 }
