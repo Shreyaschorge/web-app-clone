@@ -68,7 +68,7 @@ export const UserPropsProvider: FC = ({ children }) => {
   }, [isLoading, isAuthenticated]);
 
   const logoutUser = (
-    returnUrl: string | undefined = 'http://salesforce.plantingparty.org'
+    returnUrl: string | undefined = "http://salesforce.plantingparty.org"
   ) => {
     logout({ returnTo: returnUrl });
   };
