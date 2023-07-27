@@ -1,32 +1,39 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getHostnameDataOrDefault } from './src/utils/db';
+import { NextRequest, NextResponse } from "next/server";
+import { getHostnameDataOrDefault } from "./src/utils/db";
 
 export const config = {
-  matcher: ['/', '/about', '/_sites/:path'],
+  matcher: ["/", "/about", "/_sites/:path"],
 };
 
 export default async function middleware(req: NextRequest) {
   const url = req.nextUrl;
 
   // Get hostname (e.g. vercel.com, test.vercel.app, etc.)
-  const hostname = req.headers.get('host');
+  const hostname = req.headers.get("host");
 
   // If localhost, assign the host value manually
   // If prod, get the custom domain/subdomain value by removing the root URL
   // (in the case of "test.vercel.app", "vercel.app" is the root URL)
   const currentHost =
-    process.env.NODE_ENV === 'production' &&
-    hostname.replace(`.${process.env.ROOT_DOMAIN}`, '');
+    process.env.NODE_ENV === "development" &&
+    hostname.replace(`.${process.env.ROOT_DOMAIN}`, "");
+
   const data = await getHostnameDataOrDefault(currentHost);
+
+  console.log("hostname", hostname, url.pathname);
 
   // Prevent security issues – users should not be able to canonically access
   // the pages/sites folder and its respective contents.
   if (url.pathname.startsWith(`/_sites`)) {
     url.pathname = `/404`;
+  } else if (url.pathname === "/") {
+    url.pathname = `/_sites/${data.subdomain}/fetchDomain`;
   } else {
     // rewrite to the current subdomain under the pages/sites folder
-    url.pathname = `/_sites/${data.subdomain}${url.pathname}`;
+    url.pathname = `/`;
   }
+
+  console.log("\n\n\n", url, "\n\n\n");
 
   return NextResponse.rewrite(url);
 }
