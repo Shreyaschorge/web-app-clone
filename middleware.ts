@@ -30,7 +30,7 @@ export default async function middleware(req: NextRequest) {
     url.pathname = `/_sites/${data.subdomain}/fetchDomain`;
   } else {
     // rewrite to the current subdomain under the pages/sites folder
-    url.pathname = `/`;
+    url.pathname = `/_sites/${data.subdomain}${url.pathname}`;
   }
 
   console.log("\n\n\n", url, "\n\n\n");
