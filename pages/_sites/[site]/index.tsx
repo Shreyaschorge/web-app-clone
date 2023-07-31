@@ -43,7 +43,7 @@ export default function Donate({
   return (
     <>
       <div style={{ marginTop: "200px" }}>
-        <h1>Index</h1>
+        <h1>sub-domain: {pageProps.site.subdomain} </h1>
       </div>
     </>
   );
