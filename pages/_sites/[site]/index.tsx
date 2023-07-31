@@ -1,19 +1,7 @@
 import { useRouter } from "next/router";
-import React from "react";
-import ProjectsList from "../../../src/features/projects/screens/Projects";
-import GetAllProjectsMeta from "../../../src/utils/getMetaTags/GetAllProjectsMeta";
-import getStoredCurrency from "../../../src/utils/countryCurrency/getStoredCurrency";
-import { getRequest } from "../../../src/utils/apiRequests/api";
-import { ProjectPropsContext } from "../../../src/features/common/Layout/ProjectPropsContext";
-import Credits from "../../../src/features/projects/components/maps/Credits";
-import Filters from "../../../src/features/projects/components/projects/Filters";
-import { TENANT_ID } from "../../../src/utils/constants/environment";
-import { ErrorHandlingContext } from "../../../src/features/common/Layout/ErrorHandlingContext";
-import DirectGift from "../../../src/features/donations/components/DirectGift";
+import React, { useEffect } from "react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useTranslation } from "next-i18next";
 import nextI18NextConfig from "../../../next-i18next.config";
-import { handleError, APIError } from "@planet-sdk/common";
 import {
   getHostnameDataBySubdomain,
   getSubdomainPaths,
@@ -40,6 +28,14 @@ export default function Donate({
   currencyCode,
   setCurrencyCode,
 }: Props) {
+  const { push } = useRouter();
+
+  useEffect(() => {
+    // Get the domian here, get the config for that specific domain, set it on client side
+    // redirect to main index.tsx page
+    push("/");
+  }, []);
+
   return (
     <>
       <div style={{ marginTop: "200px" }}>
