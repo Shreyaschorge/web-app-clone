@@ -134,6 +134,7 @@ const PlanetWeb = ({
   const [initialized, setInitialized] = React.useState(false);
 
   React.useEffect(() => {
+    console.log("==> _app", router.pathname);
     storeConfig();
   }, []);
   React.useEffect(() => {
@@ -157,7 +158,8 @@ const PlanetWeb = ({
     if (
       router.pathname === "/" ||
       router.pathname === "/[p]" ||
-      router.pathname === "/[p]/[id]"
+      router.pathname === "/[p]/[id]" ||
+      router.pathname === "/_sites/[site]"
     ) {
       setIsMap(true);
     } else {

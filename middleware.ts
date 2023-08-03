@@ -20,7 +20,7 @@ export default async function middleware(req: NextRequest) {
 
   const data = await getHostnameDataOrDefault(currentHost);
 
-  console.log("hostname", hostname, url.pathname);
+  // console.log("hostname", hostname, url);
 
   // Prevent security issues – users should not be able to canonically access
   // the pages/sites folder and its respective contents.
@@ -31,7 +31,7 @@ export default async function middleware(req: NextRequest) {
     url.pathname = `/_sites/${data.subdomain}${url.pathname}`;
   }
 
-  console.log("\n\n\n", url, "\n\n\n");
+  // console.log("\n\n\n", url, "\n\n\n");
 
   return NextResponse.rewrite(url);
 }
