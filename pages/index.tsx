@@ -14,6 +14,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import nextI18NextConfig from "../next-i18next.config";
 import { handleError, APIError } from "@planet-sdk/common";
+import { getHostnameDataBySubdomain, getSubdomainPaths } from "../src/utils/db";
 
 interface Props {
   initialized: Boolean;
@@ -43,6 +44,15 @@ export default function Donate({
   const [directGift, setDirectGift] = React.useState(null);
   const [showdirectGift, setShowDirectGift] = React.useState(true);
   const [internalLanguage, setInternalLanguage] = React.useState("");
+
+  React.useEffect(() => {
+    if (router.isReady) {
+      console.log("==> tenantName");
+      console.log("==> tenantName", router.query, "\n\n");
+    }
+    console.log("==> tenantName", router.query, "\n\n");
+  }, [router.isReady]);
+
   React.useEffect(() => {
     const getdirectGift = localStorage.getItem("directGift");
     if (getdirectGift) {
@@ -143,11 +153,20 @@ export default function Donate({
   );
 }
 
-export async function getStaticProps({ locale }: any) {
+// export async function getStaticPaths() {
+//   return {
+//     paths: await getSubdomainPaths(),
+//     fallback: true, // fallback true allows sites to be generated using ISR
+//   };
+// }
+
+export async function getStaticProps(props: any) {
+  console.log("\n", props, "\n");
+
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        props.locale,
         [
           "bulkCodes",
           "common",
@@ -171,6 +190,8 @@ export async function getStaticProps({ locale }: any) {
         nextI18NextConfig,
         ["en", "de", "fr", "es", "it", "pt-BR", "cs"]
       )),
+      // site: await getHostnameDataBySubdomain(props.params),
     },
+    revalidate: 3600,
   };
 }
