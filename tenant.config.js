@@ -16,6 +16,7 @@ import sitex from './public/tenants/sitex/config';
 import T3pleset from './public/tenants/3pleset/config';
 import weareams from './public/tenants/weareams/config';
 
+// pass a param
 export default function tenantConfig() {
   switch (process.env.TENANT) {
     case 'planet':

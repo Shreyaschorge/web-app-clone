@@ -14,7 +14,6 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import nextI18NextConfig from "../next-i18next.config";
 import { handleError, APIError } from "@planet-sdk/common";
-import { getHostnameDataBySubdomain, getSubdomainPaths } from "../src/utils/db";
 
 interface Props {
   initialized: Boolean;
@@ -153,13 +152,6 @@ export default function Donate({
   );
 }
 
-// export async function getStaticPaths() {
-//   return {
-//     paths: await getSubdomainPaths(),
-//     fallback: true, // fallback true allows sites to be generated using ISR
-//   };
-// }
-
 export async function getStaticProps(props: any) {
   console.log("\n", props, "\n");
 
@@ -190,8 +182,6 @@ export async function getStaticProps(props: any) {
         nextI18NextConfig,
         ["en", "de", "fr", "es", "it", "pt-BR", "cs"]
       )),
-      // site: await getHostnameDataBySubdomain(props.params),
     },
-    revalidate: 3600,
   };
 }

@@ -57,6 +57,7 @@ export default function Credits({ setCurrencyCode }: Props): ReactElement {
             } • ${selectedCurrency}`}
           </div>
         )}
+        {/* Can be handled by context */}
         {(process.env.TENANT === 'ttc' || process.env.TENANT === 'planet') &&
         !isEmbed ? (
           <a

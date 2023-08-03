@@ -55,6 +55,8 @@ export default function Home(initialized: Props) {
 
   let HomePage;
   function getHomePage() {
+
+    // Can be handled through context
     switch (process.env.TENANT) {
       case 'salesforce':
         HomePage = SalesforceHome;

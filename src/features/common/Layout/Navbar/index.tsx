@@ -172,6 +172,7 @@ export default function NavbarComponent(props: any) {
                 </button>
               );
             }
+            // can be handled by context
             if (link === "about" && SingleLink.visible) {
               let aboutOnclick = `${SingleLink.onclick}${
                 (process.env.TENANT === "planet" ||

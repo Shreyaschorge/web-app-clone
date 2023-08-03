@@ -48,6 +48,8 @@ export default function Home({ initialized }: Props) {
   }, []);
 
   let AllPage;
+
+  // can be handeled by context
   function getAllPage() {
     switch (process.env.TENANT) {
       case 'planet':

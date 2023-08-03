@@ -41,6 +41,7 @@ export default function Filters({}: Props): ReactElement {
       });
       setFilteredProjects(filteredProjects);
     }
+    // can be handled by context
     if (projects) {
       if (process.env.TENANT === 'salesforce') {
         filterProjects();
@@ -61,6 +62,7 @@ export default function Filters({}: Props): ReactElement {
       const uniqueFilters = [...new Set(filters)];
       return uniqueFilters;
     }
+    // can be handled by context
     if (projects && process.env.TENANT === 'salesforce') {
       const filters = getFilters().filter((filter) => filter);
       setFilters(filters);
@@ -75,6 +77,7 @@ export default function Filters({}: Props): ReactElement {
     setType({ ...type, [event.target.name]: event.target.checked });
   };
 
+  // can be handled by context
   return process.env.TENANT === 'salesforce' && ready ? (
     <div className={styles.filtersContainer}>
       <div className={styles.filterButtonContainer}>
