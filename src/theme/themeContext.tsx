@@ -8,6 +8,7 @@ export const ThemeContext = React.createContext({
 
 export default function ThemeProvider({ children }: any) {
   const [theme, setTheme] = React.useState('theme-light');
+  // Can be handled through context
   const config = tenantConfig();
   React.useEffect(() => {
     if (typeof window !== 'undefined' && config.darkModeEnabled) {

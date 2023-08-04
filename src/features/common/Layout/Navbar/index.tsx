@@ -27,6 +27,7 @@ const useWidth = () => {
   return width;
 };
 
+// Can be handled through context
 const config = tenantConfig();
 export default function NavbarComponent(props: any) {
   const { t, ready, i18n } = useTranslation(["common"]);

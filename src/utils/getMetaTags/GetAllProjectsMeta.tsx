@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import tenantConfig from '../../../tenant.config';
 import Head from 'next/head';
 
+// Can be handled through context
 const config = tenantConfig();
 
 export default function GetAllProjectsMeta(): ReactElement {

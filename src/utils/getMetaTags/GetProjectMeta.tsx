@@ -4,6 +4,7 @@ import getImageUrl from '../getImageURL';
 import Head from 'next/head';
 import { truncateString } from '../getTruncatedString';
 
+// Can be handled through context
 const config = tenantConfig();
 
 interface Props {

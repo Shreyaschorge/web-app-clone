@@ -10,6 +10,7 @@ import Social from './components/Social';
 import React from 'react';
 import tenantConfig from '../../../../tenant.config';
 
+// Can be handled through context
 const config = tenantConfig();
 
 interface Props {

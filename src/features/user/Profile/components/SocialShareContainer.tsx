@@ -6,6 +6,7 @@ import LinkedIn from '../../../../../public/assets/images/icons/share/Linkedin';
 import tenantConfig from '../../../../../tenant.config';
 import { useTranslation } from 'next-i18next';
 
+// Can be handled through context
 const config = tenantConfig();
 
 export default function SocialShareContainer({ userprofile, type }: any) {

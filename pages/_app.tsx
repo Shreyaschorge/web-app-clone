@@ -117,6 +117,7 @@ const PlanetWeb = ({
   const [currencyCode, setCurrencyCode] = React.useState("");
   const [browserCompatible, setBrowserCompatible] = React.useState(false);
 
+  // Can be handled through context
   const config = tenantConfig();
 
   const tagManagerArgs = {

@@ -7,6 +7,8 @@ import { useUserProps } from "../UserPropsContext";
 
 export default function RedeemPopup() {
   const { t, ready } = useTranslation(["leaderboard"]);
+  
+  // Can be handled through context
   const config = tenantConfig();
 
   const [showRedeemPopup, setShowRedeemPopup] = useState(false);

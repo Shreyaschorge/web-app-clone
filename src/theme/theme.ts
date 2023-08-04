@@ -13,6 +13,7 @@ const {
   primaryLightColor
 } = theme;
 
+// globalStyles is not being used anywhere
 const globalStyles = css.global`
   :root {
     --primary-font-family: ${config.font.primaryFontFamily ||

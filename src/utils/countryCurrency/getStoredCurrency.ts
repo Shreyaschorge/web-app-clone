@@ -1,5 +1,6 @@
 import tenantConfig from '../../../tenant.config';
 
+// handle through params 
 const config = tenantConfig();
 
 export default function getStoredCurrency() {

@@ -36,6 +36,8 @@ interface TransitionsModalProps {
   setSelectedCountry: Function;
   setCurrencyCode?: Function;
 }
+
+// Can be handled through context
 const config = tenantConfig();
 
 // reduce the allowed languages to the languages listed in the tenants config file

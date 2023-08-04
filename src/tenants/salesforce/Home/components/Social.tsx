@@ -2,6 +2,7 @@ import styles from './../styles/Social.module.scss';
 import gridStyles from './../styles/Grid.module.scss';
 import tenantConfig from '../../../../../tenant.config';
 
+// Can be handled through context
 const config = tenantConfig();
 
 export default function Social() {

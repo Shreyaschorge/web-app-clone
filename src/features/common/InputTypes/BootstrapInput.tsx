@@ -1,6 +1,7 @@
 import { InputBase, styled } from '@mui/material';
 import tenantConfig from '../../../../tenant.config';
 
+// handle through props
 const config = tenantConfig();
 
 const BootstrapInput = styled(InputBase)({

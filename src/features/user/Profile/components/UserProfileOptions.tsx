@@ -11,6 +11,7 @@ import RedeemModal from './RedeemModal';
 import SocialShareContainer from './SocialShareContainer';
 import { useTranslation } from 'next-i18next';
 
+// Can be handled through context
 const config = tenantConfig();
 
 const socialIconAnimate = {

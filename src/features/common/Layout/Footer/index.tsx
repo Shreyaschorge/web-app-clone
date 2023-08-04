@@ -13,6 +13,7 @@ import DarkModeSwitch from '../DarkModeSwitch.tsx';
 // let styles = require('./Footer.module.css');
 export default function Footer(): ReactElement | null {
   const { t, i18n, ready } = useTranslation(['common']);
+  // Can be handled through context
   const config = tenantConfig();
   const [openModal, setOpenModal] = useState(false);
   const [language, setLanguage] = useState(i18n.language);

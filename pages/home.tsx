@@ -16,6 +16,7 @@ interface Props {
 
 export default function Home(initialized: Props) {
   const router = useRouter();
+  // Can be handled through context
   const config = tenantConfig();
   const [leaderboard, setLeaderboard] = React.useState(null);
   const [tenantScore, setTenantScore] = React.useState(null);

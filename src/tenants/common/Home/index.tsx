@@ -7,6 +7,7 @@ import React from 'react';
 import tenantConfig from '../../../../tenant.config';
 import { useTranslation } from 'next-i18next';
 
+// // Can be handled through context
 const config = tenantConfig();
 
 interface Props {

@@ -4,6 +4,8 @@ import LeaderBoard from '../../common/LeaderBoard';
 import TreeCounter from '../../../features/common/TreeCounter/TreeCounter';
 import Footer from '../../../features/common/Layout/Footer';
 import tenantConfig from './../../../../tenant.config';
+
+// Can be handled through context
 const config = tenantConfig();
 
 interface Props {

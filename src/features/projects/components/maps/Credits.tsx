@@ -6,6 +6,7 @@ import tenantConfig from '../../../../../tenant.config';
 import DarkModeSwitch from '../../../common/Layout/DarkModeSwitch.tsx';
 import { ParamsContext } from '../../../common/Layout/QueryParamsContext';
 
+// Can be handled through context
 const config = tenantConfig();
 
 interface Props {

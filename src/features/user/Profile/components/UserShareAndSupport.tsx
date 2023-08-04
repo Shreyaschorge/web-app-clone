@@ -11,6 +11,7 @@ import { motion } from 'framer-motion';
 import GlobeSelected from '../../../../../public/assets/images/navigation/GlobeSelected';
 import { truncateString } from '../../../../utils/getTruncatedString';
 
+// Can be handled through context
 const config = tenantConfig();
 
 export default function UserShareAndSupport({ userprofile }: any) {

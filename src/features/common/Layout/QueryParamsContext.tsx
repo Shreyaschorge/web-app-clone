@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import tenantConfig from '../../../../tenant.config';
 
+// // Can be handled through context
 const config = tenantConfig();
 const tenantSupportedLocale = config.languages;
 type QueryParamType = string | undefined | string[] | null;

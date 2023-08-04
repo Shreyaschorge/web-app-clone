@@ -1,5 +1,7 @@
 import { TextField, styled } from '@mui/material';
 import tenantConfig from '../../../../tenant.config';
+
+// handle through props
 const config = tenantConfig();
 
 const MaterialTextField = styled(TextField)({

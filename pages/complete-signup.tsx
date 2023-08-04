@@ -5,6 +5,7 @@ import Head from 'next/head';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function UserProfile() {
+  // Can be handled through context
   const config = tenantConfig();
   return (
     <>

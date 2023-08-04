@@ -4,6 +4,7 @@ import { useTheme } from '../../../../theme/themeContext';
 import styles from './Header.module.scss';
 import locales from '../../../../../public/static/localeList.json';
 
+// Can be handled through context
 const config = tenantConfig();
 export default function Header() {
   const { theme: themeType } = useTheme();
