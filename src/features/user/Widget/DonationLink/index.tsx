@@ -18,6 +18,7 @@ export default function DonationLink(): ReactElement | null {
 
   async function fetchProjectList() {
     try {
+      // Can be handled by context 
       const projectsList = await getRequest<MapSingleProject[]>(
         `/app/projects`,
         {

@@ -108,6 +108,7 @@ export default function Donate({
         setCurrencyCode(currency);
         setInternalLanguage(i18n.language);
         try {
+          // can be handled by context 
           const projects = await getRequest(`/app/projects`, {
             _scope: "map",
             currency: currency,

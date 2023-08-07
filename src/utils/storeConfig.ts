@@ -9,6 +9,7 @@ export async function storeConfig() {
   } else {
     userLang = 'en';
   }
+  // send through params
   await fetch(`${process.env.CONFIG_URL}`, {
     headers: {
       'tenant-key': `${TENANT_ID}`,

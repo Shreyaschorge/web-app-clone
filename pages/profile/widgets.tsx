@@ -41,6 +41,7 @@ function ProfilePage(): ReactElement {
       </Head>
       {user?.isPrivate === false ? (
         <div className="profilePage" style={{ padding: '0px' }}>
+          {/* Can be handled by context */}
           <iframe
             src={`${process.env.WIDGET_URL}?user=${user?.id}&tenantkey=${TENANT_ID}`}
             className={styles.widgetIFrame}

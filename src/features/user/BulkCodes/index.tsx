@@ -73,6 +73,7 @@ export default function BulkCodes({
   const fetchProjectList = useCallback(async () => {
     if (planetCashAccount && !projectList) {
       try {
+        // Can be handled by context 
         const fetchedProjects = await getRequest<MapSingleProject[]>(
           `/app/projects`,
           {

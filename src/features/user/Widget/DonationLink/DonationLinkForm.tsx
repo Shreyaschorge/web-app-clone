@@ -70,6 +70,7 @@ const DonationLinkForm = ({
 
     const selectedCountry = country !== 'auto' ? `country=${country}&` : '';
 
+    // Can be handled by context 
     const url = `${link}?${selectedCountry}${selectedLanguage}${
       localProject == null ? '' : `to=${localProject.slug}&`
     }tenant=${TENANT_ID}${isSupport ? `&s=${user.slug}` : ''}

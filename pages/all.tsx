@@ -18,6 +18,8 @@ export default function Home({ initialized }: Props) {
   React.useEffect(() => {
     async function loadLeaderboard() {
       try {
+
+        // Can be handled by context
         const newLeaderboard = await getRequest(
           `/app/leaderboard/${TENANT_ID}`
         );
@@ -35,6 +37,7 @@ export default function Home({ initialized }: Props) {
   React.useEffect(() => {
     async function loadTenantScore() {
       try {
+        // can be handled by context
         const newTenantScore = await getRequest(
           `/app/tenantScore/${TENANT_ID}`
         );
