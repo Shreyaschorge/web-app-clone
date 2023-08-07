@@ -20,7 +20,7 @@ export default async function middleware(req: NextRequest) {
 
   const data = await getHostnameDataOrDefault(currentHost);
 
-  console.log("data", data);
+  console.log("data", data, currentHost, hostname);
 
   // Prevent security issues – users should not be able to canonically access
   // the pages/sites folder and its respective contents.
