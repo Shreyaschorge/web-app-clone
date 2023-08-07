@@ -29,7 +29,7 @@ const DEFAULT_HOST = hostnamesDB.find((h) => h.defaultForPreview);
 export async function getHostnameDataOrDefault(
   subdomainOrCustomDomain?: string
 ) {
-  if (!subdomainOrCustomDomain) return DEFAULT_HOST;
+  if (!subdomainOrCustomDomain) return null;
 
   // check if site is a custom domain or a subdomain
   const customDomain = subdomainOrCustomDomain.includes(".");

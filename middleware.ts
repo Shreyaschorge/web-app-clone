@@ -20,11 +20,11 @@ export default async function middleware(req: NextRequest) {
 
   const data = await getHostnameDataOrDefault(currentHost);
 
-  // console.log("hostname", hostname, url);
+  console.log("data", data);
 
   // Prevent security issues – users should not be able to canonically access
   // the pages/sites folder and its respective contents.
-  if (url.pathname.startsWith(`/_sites`)) {
+  if (url.pathname.startsWith(`/_sites`) || !data) {
     url.pathname = `/404`;
   } else {
     // rewrite to the current subdomain under the pages/sites folder
