@@ -1,23 +1,57 @@
 const hostnamesDB = [
   {
-    name: "Plant for the planet",
-    description: "Plant-for-the-planet",
-    subdomain: "stern",
-    customDomain: "plantingparty.org",
+    subdomain: 'planet',
+    customDomain: 'plantingparty.org',
     // Default subdomain for Preview deployments and for local development
     defaultForPreview: true,
   },
   {
-    name: "SalesForce",
-    description: "Salesforce Subdomain",
-    subdomain: "salesforce",
+    subdomain: 'salesforce',
   },
   {
-    name: "Pampers",
-    description: "Pampers Subdomain",
-    subdomain: "pampers",
+    subdomain: 'pampers',
+  },
+  {
+    subdomain: '3pleset',
+  },
+  {
+    subdomain: 'culchacandela',
+  },
+  {
+    subdomain: 'energizer',
+  },
+  {
+    subdomain: 'interactClub',
+  },
+  {
+    subdomain: 'lacoqueta',
+  },
+  {
+    subdomain: 'nitrosb',
+  },
+  {
+    subdomain: 'senatDerWirtschaft',
+  },
+  {
+    subdomain: 'sitex',
+  },
+  {
+    subdomain: 'stern',
+  },
+  {
+    subdomain: 'ttc',
+  },
+  {
+    subdomain: 'ulmpflanzt',
+  },
+  {
+    subdomain: 'weareams',
+  },
+  {
+    subdomain: 'xiting',
   },
 ];
+
 const DEFAULT_HOST = hostnamesDB.find((h) => h.defaultForPreview);
 
 /**
@@ -31,15 +65,17 @@ export async function getHostnameDataOrDefault(
 ) {
   if (!subdomainOrCustomDomain) return DEFAULT_HOST;
 
-  const customDomain = subdomainOrCustomDomain.includes(".");
+  // check if site is a custom domain or a subdomain
+  const customDomain = subdomainOrCustomDomain.includes('.');
 
-  const foundHost = hostnamesDB.find((item) =>
-    customDomain
-      ? item.customDomain === subdomainOrCustomDomain
-      : item.subdomain === subdomainOrCustomDomain
+  // fetch data from mock database using the site value as the key
+  return (
+    hostnamesDB.find((item) =>
+      customDomain
+        ? item.customDomain === subdomainOrCustomDomain
+        : item.subdomain === subdomainOrCustomDomain
+    ) ?? DEFAULT_HOST
   );
-
-  return foundHost ? foundHost : !subdomainOrCustomDomain ? DEFAULT_HOST : null;
 }
 
 /**
