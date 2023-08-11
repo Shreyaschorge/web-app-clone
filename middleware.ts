@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getHostnameDataOrDefault } from "./src/utils/db";
+import { getTenantSubdomainOrDefault } from "./src/utils/db";
 
 export const config = {
-  matcher: ["/", "/about", "/_sites/:path"],
+  matcher: ["/", "/_sites/:path"],
 };
 
 export default async function middleware(req: NextRequest) {
@@ -14,10 +14,12 @@ export default async function middleware(req: NextRequest) {
   // If localhost, assign the host value manually
   // If prod, get the custom domain/subdomain value by removing the root URL
   // (in the case of "test.vercel.app", "vercel.app" is the root URL)
-  const currentHost =
-    process.env.NODE_ENV === "production" &&
-    hostname.replace(`.${process.env.ROOT_DOMAIN}`, "");
-  const data = await getHostnameDataOrDefault(currentHost);
+  // const currentHost =
+  //   process.env.NODE_ENV === "development" &&
+  //   hostname.replace(`.${process.env.ROOT_DOMAIN}`, "");
+  // const data = await getHostnameDataOrDefault(currentHost);
+
+  const subdomain = await getTenantSubdomainOrDefault(hostname!);
 
   // Prevent security issues – users should not be able to canonically access
   // the pages/sites folder and its respective contents.
@@ -25,9 +27,7 @@ export default async function middleware(req: NextRequest) {
     url.pathname = `/404`;
   } else {
     // rewrite to the current subdomain under the pages/sites folder
-    url.pathname = `/_sites/${
-      currentHost === "ten_3hEjJCBs" ? "salesforce" : data.subdomain
-    }${url.pathname}`;
+    url.pathname = `/_sites/${subdomain}${url.pathname}`;
   }
 
   return NextResponse.rewrite(url);

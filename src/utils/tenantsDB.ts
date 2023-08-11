@@ -1,6 +1,22 @@
-const tenants = {
-    '3pleset': {
-        tenantName: '3pleset',
-        
-    }
-}
+const hostedDomain = [
+  {
+    subdomain: "planet",
+    tenantURL: "https://www1.plant-for-the-planet.org",
+    customDomain: "plantingparty.org",
+    defaultForPreview: true,
+  },
+  { subdomain: "salesforce", tenantURL: "https://trees.salesforce.com" },
+  { subdomain: "pampers", tenantURL: "https://wald.pampers.de" },
+  { subdomain: "3pleset", tenantURL: "https://trees.3pleset.de/" },
+  { subdomain: "culchacandela", tenantURL: "https://wald.culchacandela.de" },
+  { subdomain: "energizer", tenantURL: "https://wald.energizer.de" },
+  { subdomain: "lacoqueta", tenantURL: "https://forest.lacoquetakids.com" },
+  { subdomain: "nitrosb", tenantURL: "https://forest.nitrosnowboards.com" },
+  { subdomain: "sitex", tenantURL: "https://wald.sitex.de" },
+  { subdomain: "ttc", tenantURL: "https://www.trilliontreecampaign.org" },
+  { subdomain: "xiting", tenantURL: "https://trees.xiting.de" },
+  { subdomain: "weareams", tenantURL: "" },
+  { subdomain: "ulmpflanzt", tenantURL: "" },
+  { subdomain: "interactClub", tenantURL: "" },
+  { subdomain: "senatDerWirtschaft", tenantURL: "" },
+];
