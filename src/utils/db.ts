@@ -98,7 +98,9 @@ function isSubdomain(domain: string) {
   const domainParts = domain.split(".");
 
   return process.env.NODE_ENV !== "development"
-    ? !domain.startsWith("www") && domainParts.length > 2
+    ? !domain.startsWith("www") &&
+        !domain.startsWith("www1") &&
+        domainParts.length > 2
     : domainParts.length > 1;
 }
 
