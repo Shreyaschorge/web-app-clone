@@ -114,8 +114,8 @@ export async function getTenantSubdomainOrDefault(
   let subdomain;
 
   if (!rootDomain) {
-    const tenant = hostedDomain.find(
-      (tenant) => tenant.config.appDomain === localSubdomainOrTenantDomain
+    const tenant = hostedDomain.find((tenant) =>
+      tenant.config.appDomain.includes(localSubdomainOrTenantDomain)
     );
 
     subdomain = tenant?.subdomain ?? DEFAULT_TENANT_SUBDOMAIN;
