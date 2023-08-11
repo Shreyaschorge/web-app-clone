@@ -96,9 +96,10 @@ export async function getSubdomainPaths() {
 
 function isSubdomain(domain: string) {
   const domainParts = domain.split(".");
+
   return process.env.NODE_ENV !== "development"
-    ? domainParts.length > 2
-    : domainParts.length > 1; // More than 2 parts indicates a subdomain (in prod) but 1 is dev env
+    ? !domain.startsWith("www") && domainParts.length > 2
+    : domainParts.length > 1;
 }
 
 export async function getTenantSubdomainOrDefault(
