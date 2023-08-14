@@ -18,6 +18,7 @@ import {
   getHostnameDataBySubdomain,
   getSubdomainPaths,
 } from "../../../src/utils/db";
+import tenantConfig from "../../../tenant.config";
 
 interface Props {
   initialized: Boolean;
@@ -38,6 +39,7 @@ export default function Donate({
   initialized,
   currencyCode,
   setCurrencyCode,
+  pageProps,
 }: Props) {
   const {
     setProject,
@@ -59,10 +61,8 @@ export default function Donate({
 
   React.useEffect(() => {
     if (router.isReady) {
-      console.log("==> tenantName");
-      console.log("==> tenantName", router.query, "\n\n");
+      console.log("==> tenantName", pageProps.site, "\n\n");
     }
-    console.log("==> tenantName", router.query, "\n\n");
   }, [router.isReady]);
 
   React.useEffect(() => {
@@ -108,7 +108,7 @@ export default function Donate({
         setCurrencyCode(currency);
         setInternalLanguage(i18n.language);
         try {
-          // can be handled by context 
+          // can be handled by context
           const projects = await getRequest(`/app/projects`, {
             _scope: "map",
             currency: currency,
@@ -174,7 +174,15 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(props: any) {
-  console.log("\n", props.params, "\n");
+  // Call the backend to fetch the tenants
+  // filter them by subdomain and extract tenantID
+
+  const _tenantConf = tenantConfig(props.params.site);
+
+  const tenantConf = {
+    ..._tenantConf,
+    tenantID: "ten_xyz",
+  };
 
   return {
     props: {
@@ -203,7 +211,7 @@ export async function getStaticProps(props: any) {
         nextI18NextConfig,
         ["en", "de", "fr", "es", "it", "pt-BR", "cs"]
       )),
-      site: await getHostnameDataBySubdomain(props.params.site),
+      site: tenantConf,
     },
     revalidate: 3600,
   };

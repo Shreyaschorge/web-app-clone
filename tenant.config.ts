@@ -17,17 +17,17 @@ import T3pleset from './public/tenants/3pleset/config';
 import weareams from './public/tenants/weareams/config';
 
 // pass a param
-export default function tenantConfig() {
-  switch (process.env.TENANT) {
+export default function tenantConfig(tenant: string) {
+  switch (tenant) {
     case 'planet':
       return planetConfig;
-    case 'planetbeta':
+    case 'planetbeta': // Not sure if we'll use this in future, there is no current deployment for this tenant.
       return planetConfigBeta;
     case 'ttc':
       return ttcConfig;
     case 'salesforce':
       return salesforceConfig;
-    case 'stern':
+    case 'stern': // The current status in White Label Tenant Apps table in note for this tenant is stoped.
       return sternConfig;
     case 'nitrosb':
       return nitrosbConfig;
