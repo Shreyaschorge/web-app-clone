@@ -92,12 +92,16 @@ export async function getHostnameDataBySubdomain(subdomain: string) {
  * available hostname.
  */
 export async function getSubdomainPaths() {
+  const response = await fetch(`${process.env.API_ENDPOINT}/app/tenants`);
+
+  const tenants = (await response.json()) as Tenants;
+
   // get all sites that have subdomains set up
-  const subdomains = hostedDomain.filter((item) => item.subdomain);
+  const subdomains = tenants.filter((item) => item.config.subDomain);
 
   // build paths for each of the sites in the previous two lists
   return subdomains.map((item) => {
-    return { params: { site: item.subdomain } };
+    return { params: { site: item.config.subDomain } };
   });
 }
 
