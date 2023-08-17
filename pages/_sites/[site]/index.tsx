@@ -19,6 +19,7 @@ import {
   getSubdomainPaths,
 } from "../../../src/utils/db";
 import tenantConfig from "../../../tenant.config";
+import { Tenants } from "@planet-sdk/common/build/types/tenant";
 
 interface Props {
   initialized: Boolean;
@@ -177,11 +178,21 @@ export async function getStaticProps(props: any) {
   // Call the backend to fetch the tenants
   // filter them by subdomain and extract tenantID
 
+  const response = await fetch(`${process.env.API_ENDPOINT}/app/tenants`);
+
+  const tenants = (await response.json()) as Tenants;
+
+  const tenant = tenants.find(
+    (tenant) => tenant.config.subDomain === props.params.site
+  );
+
   const _tenantConf = tenantConfig(props.params.site);
 
   const tenantConf = {
     ..._tenantConf,
-    tenantID: "ten_xyz",
+    tenantID: tenant?.id,
+    customDomain: tenant?.config.customDomain,
+    auth0ClientId: tenant?.config.auth0ClientId,
   };
 
   return {

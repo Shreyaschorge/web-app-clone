@@ -1,3 +1,6 @@
+import { getRequest } from "./apiRequests/api";
+import { Tenants } from "@planet-sdk/common/build/types/tenant";
+
 const hostedDomain = [
   {
     subdomain: "planet",
@@ -77,7 +80,11 @@ const DEFAULT_TENANT_SUBDOMAIN = "planet";
  * This method is used by pages under middleware.ts
  */
 export async function getHostnameDataBySubdomain(subdomain: string) {
-  return hostedDomain.find((item) => item.subdomain === subdomain);
+  const _hostedDomain = await getRequest<Tenants>(
+    `${process.env.API_ENDPOINT}/app/tenants`
+  );
+
+  return _hostedDomain.find((item) => item.config.subDomain === subdomain);
 }
 
 /**
@@ -107,6 +114,10 @@ function isSubdomain(domain: string) {
 export async function getTenantSubdomainOrDefault(
   localSubdomainOrTenantDomain: string
 ) {
+  const response = await fetch(`${process.env.API_ENDPOINT}/app/tenants`);
+
+  const _hostedDomain = (await response.json()) as Tenants;
+
   const rootDomain = localSubdomainOrTenantDomain.includes(
     process.env.ROOT_DOMAIN!
   );
@@ -114,11 +125,13 @@ export async function getTenantSubdomainOrDefault(
   let subdomain;
 
   if (!rootDomain) {
-    const tenant = hostedDomain.find((tenant) =>
-      tenant.config.appDomain.includes(localSubdomainOrTenantDomain)
+    const tenant = _hostedDomain.find((tenant) =>
+      tenant.config.customDomain
+        ? tenant.config.customDomain.includes(localSubdomainOrTenantDomain)
+        : tenant.config.appDomain.includes(localSubdomainOrTenantDomain)
     );
 
-    subdomain = tenant?.subdomain ?? DEFAULT_TENANT_SUBDOMAIN;
+    subdomain = tenant?.config.subDomain ?? DEFAULT_TENANT_SUBDOMAIN;
   } else {
     if (isSubdomain(localSubdomainOrTenantDomain)) {
       subdomain = localSubdomainOrTenantDomain.replace(
