@@ -18,7 +18,7 @@ import weareams from "./public/tenants/weareams/config";
 
 // pass a param
 export default function tenantConfig(tenant: string) {
-  switch (tenant ?? process.env.TENANT) {
+  switch (tenant) {
     case "planet":
       return planetConfig;
     case "planetbeta": // Not sure if we'll use this in future, there is no current deployment for this tenant.
