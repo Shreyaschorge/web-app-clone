@@ -190,7 +190,7 @@ export async function getStaticProps(props: any) {
 
   const tenantConf = {
     ..._tenantConf,
-    tenantID: tenant?.id,
+    tenantID: tenant?.id ?? process.env.TENANTID,
     customDomain: tenant?.config.customDomain,
     auth0ClientId: tenant?.config.auth0ClientId,
   };
