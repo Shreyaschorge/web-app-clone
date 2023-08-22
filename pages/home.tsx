@@ -1,14 +1,14 @@
-import { useRouter } from 'next/router';
-import React from 'react';
-import SalesforceHome from '../src/tenants/salesforce/Home';
-import SternHome from '../src/tenants/stern/Home';
-import BasicHome from '../src/tenants/common/Home';
-import tenantConfig from '../tenant.config';
-import GetHomeMeta from '../src/utils/getMetaTags/GetHomeMeta';
-import { getRequest } from '../src/utils/apiRequests/api';
-import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { handleError, APIError } from '@planet-sdk/common';
+import { useRouter } from "next/router";
+import React from "react";
+import SalesforceHome from "../src/tenants/salesforce/Home";
+import SternHome from "../src/tenants/stern/Home";
+import BasicHome from "../src/tenants/common/Home";
+import GetHomeMeta from "../src/utils/getMetaTags/GetHomeMeta";
+import { getRequest } from "../src/utils/apiRequests/api";
+import { ErrorHandlingContext } from "../src/features/common/Layout/ErrorHandlingContext";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { handleError, APIError } from "@planet-sdk/common";
+import { useTenant } from "../src/features/common/Layout/TenantContext";
 
 interface Props {
   initialized: Boolean;
@@ -16,11 +16,10 @@ interface Props {
 
 export default function Home(initialized: Props) {
   const router = useRouter();
-  // Can be handled through context
-  const config = tenantConfig();
   const [leaderboard, setLeaderboard] = React.useState(null);
   const [tenantScore, setTenantScore] = React.useState(null);
   const { redirect, setErrors } = React.useContext(ErrorHandlingContext);
+  const { tenantConfig } = useTenant();
 
   React.useEffect(() => {
     async function loadTenantScore() {
@@ -29,7 +28,7 @@ export default function Home(initialized: Props) {
         setTenantScore(newTenantScore);
       } catch (err) {
         setErrors(handleError(err as APIError));
-        redirect('/');
+        redirect("/");
       }
     }
     loadTenantScore();
@@ -42,41 +41,40 @@ export default function Home(initialized: Props) {
         setLeaderboard(newLeaderBoard);
       } catch (err) {
         setErrors(handleError(err as APIError));
-        redirect('/');
+        redirect("/");
       }
     }
     loadLeaderboard();
   }, []);
 
-  if (!config.header.items['home'].visible) {
-    if (typeof window !== 'undefined') {
-      router.push('/');
+  if (!tenantConfig?.header.items["home"].visible) {
+    if (typeof window !== "undefined") {
+      router.push("/");
     }
   }
 
   let HomePage;
   function getHomePage() {
-
     // Can be handled through context
     switch (process.env.TENANT) {
-      case 'salesforce':
+      case "salesforce":
         HomePage = SalesforceHome;
         return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
-      case 'stern':
+      case "stern":
         HomePage = SternHome;
         return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
-      case 'nitrosb':
-      case 'energizer':
-      case 'senatDerWirtschaft':
-      case 'pampers':
-      case 'interactClub':
-      case 'culchacandela':
-      case 'xiting':
-      case 'lacoqueta':
-      case 'ulmpflanzt':
-      case 'sitex':
-      case '3pleset':
-      case 'weareams':
+      case "nitrosb":
+      case "energizer":
+      case "senatDerWirtschaft":
+      case "pampers":
+      case "interactClub":
+      case "culchacandela":
+      case "xiting":
+      case "lacoqueta":
+      case "ulmpflanzt":
+      case "sitex":
+      case "3pleset":
+      case "weareams":
         HomePage = BasicHome;
         return <HomePage leaderboard={leaderboard} tenantScore={tenantScore} />;
       default:
@@ -99,27 +97,27 @@ export async function getStaticProps({ locale }) {
       ...(await serverSideTranslations(
         locale,
         [
-          'bulkCodes',
-          'common',
-          'country',
-          'donate',
-          'donationLink',
-          'editProfile',
-          'giftfunds',
-          'leaderboard',
-          'managePayouts',
-          'manageProjects',
-          'maps',
-          'me',
-          'planet',
-          'planetcash',
-          'redeem',
-          'registerTrees',
-          'tenants',
-          'treemapper',
+          "bulkCodes",
+          "common",
+          "country",
+          "donate",
+          "donationLink",
+          "editProfile",
+          "giftfunds",
+          "leaderboard",
+          "managePayouts",
+          "manageProjects",
+          "maps",
+          "me",
+          "planet",
+          "planetcash",
+          "redeem",
+          "registerTrees",
+          "tenants",
+          "treemapper",
         ],
         null,
-        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
+        ["en", "de", "fr", "es", "it", "pt-BR", "cs"]
       )),
     },
   };
