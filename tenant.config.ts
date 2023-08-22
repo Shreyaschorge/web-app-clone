@@ -1,3 +1,5 @@
+import { TenantSpecificConfig } from '@planet-sdk/common/build/types/tenant'
+
 import planetConfig from "./public/tenants/planet/config";
 import planetConfigBeta from "./public/tenants/planet/configBeta";
 import ttcConfig from "./public/tenants/ttc/config";
@@ -17,7 +19,7 @@ import T3pleset from "./public/tenants/3pleset/config";
 import weareams from "./public/tenants/weareams/config";
 
 // pass a param
-export default function tenantConfig(tenant: string) {
+export default function tenantConfig(tenant: string): TenantSpecificConfig {
   switch (tenant) {
     case "planet":
       return planetConfig;
@@ -27,7 +29,7 @@ export default function tenantConfig(tenant: string) {
       return ttcConfig;
     case "salesforce":
       return salesforceConfig;
-    case "stern": // The current status in White Label Tenant Apps table in note for this tenant is stoped.
+    case "stern": // The current status in White Label Tenant Apps table in notion for this tenant is stoped.
       return sternConfig;
     case "nitrosb":
       return nitrosbConfig;

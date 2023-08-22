@@ -39,6 +39,7 @@ import { PlanetCashProvider } from "../src/features/common/Layout/PlanetCashCont
 import { PayoutsProvider } from "../src/features/common/Layout/PayoutsContext";
 import { appWithTranslation } from "next-i18next";
 import nextI18NextConfig from "../next-i18next.config.js";
+import { TenantProvider } from "../src/features/common/Layout/TenantContext";
 
 const VideoContainer = dynamic(
   () => import("../src/features/common/LandingVideo"),
@@ -262,47 +263,49 @@ const PlanetWeb = ({
                   onRedirectCallback={onRedirectCallback}
                   useRefreshTokens={true}
                 >
-                  <ThemeProvider>
-                    <MuiThemeProvider theme={materialTheme}>
-                      <CssBaseline />
-                      <UserPropsProvider>
-                        <PlanetCashProvider>
-                          <PayoutsProvider>
-                            <Layout>
-                              <ProjectPropsProvider>
-                                <BulkCodeProvider>
-                                  <AnalyticsProvider>
-                                    {isMap ? (
-                                      <>
-                                        {project ? (
-                                          <MapLayout />
-                                        ) : projects ? (
-                                          <MapLayout />
-                                        ) : null}
-                                        <div
-                                          style={
-                                            config.tenantName === "planet" ||
-                                            config.tenantName === "ttc"
-                                              ? {}
-                                              : { display: "none" }
-                                          }
-                                        >
-                                          <PlayButton
-                                            setshowVideo={setshowVideo}
-                                          />
-                                        </div>
-                                      </>
-                                    ) : null}
-                                    <Component {...ProjectProps} />
-                                  </AnalyticsProvider>
-                                </BulkCodeProvider>
-                              </ProjectPropsProvider>
-                            </Layout>
-                          </PayoutsProvider>
-                        </PlanetCashProvider>
-                      </UserPropsProvider>
-                    </MuiThemeProvider>
-                  </ThemeProvider>
+                  <TenantProvider>
+                    <ThemeProvider>
+                      <MuiThemeProvider theme={materialTheme}>
+                        <CssBaseline />
+                        <UserPropsProvider>
+                          <PlanetCashProvider>
+                            <PayoutsProvider>
+                              <Layout>
+                                <ProjectPropsProvider>
+                                  <BulkCodeProvider>
+                                    <AnalyticsProvider>
+                                      {isMap ? (
+                                        <>
+                                          {project ? (
+                                            <MapLayout />
+                                          ) : projects ? (
+                                            <MapLayout />
+                                          ) : null}
+                                          <div
+                                            style={
+                                              config.tenantName === "planet" ||
+                                              config.tenantName === "ttc"
+                                                ? {}
+                                                : { display: "none" }
+                                            }
+                                          >
+                                            <PlayButton
+                                              setshowVideo={setshowVideo}
+                                            />
+                                          </div>
+                                        </>
+                                      ) : null}
+                                      <Component {...ProjectProps} />
+                                    </AnalyticsProvider>
+                                  </BulkCodeProvider>
+                                </ProjectPropsProvider>
+                              </Layout>
+                            </PayoutsProvider>
+                          </PlanetCashProvider>
+                        </UserPropsProvider>
+                      </MuiThemeProvider>
+                    </ThemeProvider>
+                  </TenantProvider>
                 </Auth0Provider>
               </div>
             </div>

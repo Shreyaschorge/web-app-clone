@@ -19,20 +19,18 @@ import {
   getSubdomainPaths,
 } from "../../../src/utils/db";
 import tenantConfig from "../../../tenant.config";
-import { Tenants } from "@planet-sdk/common/build/types/tenant";
+import {
+  TenantAppConfig,
+  Tenants,
+} from "@planet-sdk/common/build/types/tenant";
+import { useTenant } from "../../../src/features/common/Layout/TenantContext";
 
 interface Props {
   initialized: Boolean;
   currencyCode: any;
   setCurrencyCode: Function;
   pageProps: {
-    site: {
-      name: string;
-      description: string;
-      subdomain: string;
-      customDomain: string;
-      defaultForPreview: false;
-    };
+    config: TenantAppConfig;
   };
 }
 
@@ -59,10 +57,11 @@ export default function Donate({
   const [directGift, setDirectGift] = React.useState(null);
   const [showdirectGift, setShowDirectGift] = React.useState(true);
   const [internalLanguage, setInternalLanguage] = React.useState("");
+  const { setTenantConfig } = useTenant();
 
   React.useEffect(() => {
     if (router.isReady) {
-      console.log("==> tenantName", pageProps.site, "\n\n");
+      setTenantConfig(pageProps.config);
     }
   }, [router.isReady]);
 
@@ -188,11 +187,11 @@ export async function getStaticProps(props: any) {
 
   const _tenantConf = tenantConfig(props.params.site);
 
-  const tenantConf = {
+  const tenantConf: TenantAppConfig = {
     ..._tenantConf,
-    tenantID: tenant?.id,
-    customDomain: tenant?.config.customDomain,
-    auth0ClientId: tenant?.config.auth0ClientId,
+    tenantID: tenant!.id,
+    customDomain: tenant!.config.customDomain!,
+    auth0ClientId: tenant!.config.auth0ClientId,
   };
 
   return {
@@ -222,7 +221,7 @@ export async function getStaticProps(props: any) {
         nextI18NextConfig,
         ["en", "de", "fr", "es", "it", "pt-BR", "cs"]
       )),
-      site: tenantConf,
+      config: tenantConf,
     },
     revalidate: 3600,
   };
