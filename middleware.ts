@@ -1,15 +1,15 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getTenantSubdomainOrDefault } from "./src/utils/db";
+import { NextRequest, NextResponse } from 'next/server';
+import { getTenantSubdomainOrDefault } from './src/utils/db';
 
 export const config = {
-  matcher: ["/", "/_sites/:path"],
+  matcher: ['/', '/_sites/:path', '/profile'],
 };
 
 export default async function middleware(req: NextRequest) {
   const url = req.nextUrl;
 
   // Get hostname (e.g. vercel.com, test.vercel.app, etc.)
-  const hostname = req.headers.get("host");
+  const hostname = req.headers.get('host');
 
   // If localhost, assign the host value manually
   // If prod, get the custom domain/subdomain value by removing the root URL
