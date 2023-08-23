@@ -15,6 +15,10 @@ function ProfilePage(): ReactElement {
   const router = useRouter();
   const { user, contextLoaded, token } = useUserProps();
 
+  useEffect(() => {
+    console.log('==> router', router.query.site);
+  }, []);
+
   // Internal states
   const [profile, setProfile] = React.useState<null | User>();
   const [authenticatedType, setAuthenticatedType] = React.useState('');
