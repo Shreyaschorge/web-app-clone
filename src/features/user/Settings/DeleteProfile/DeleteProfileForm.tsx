@@ -1,18 +1,18 @@
-import React from "react";
-import styles from "./DeleteProfile.module.scss";
-import { deleteAuthenticatedRequest } from "../../../../utils/apiRequests/api";
-import { useUserProps } from "../../../common/Layout/UserPropsContext";
-import { ErrorHandlingContext } from "../../../common/Layout/ErrorHandlingContext";
-import CustomModal from "../../../common/Layout/CustomModal";
-import router from "next/router";
-import { useTranslation } from "next-i18next";
-import { Button, TextField } from "@mui/material";
-import StyledForm from "../../../common/Layout/StyledForm";
-import { APIError, handleError, SerializedError } from "@planet-sdk/common";
+import React from 'react';
+import styles from './DeleteProfile.module.scss';
+import { deleteAuthenticatedRequest } from '../../../../utils/apiRequests/api';
+import { useUserProps } from '../../../common/Layout/UserPropsContext';
+import { ErrorHandlingContext } from '../../../common/Layout/ErrorHandlingContext';
+import CustomModal from '../../../common/Layout/CustomModal';
+import router from 'next/router';
+import { useTranslation } from 'next-i18next';
+import { Button, TextField } from '@mui/material';
+import StyledForm from '../../../common/Layout/StyledForm';
+import { APIError, handleError, SerializedError } from '@planet-sdk/common';
 
 export default function DeleteProfileForm() {
   const { user, token, logoutUser } = useUserProps();
-  const { t } = useTranslation(["me", "common", "editProfile"]);
+  const { t } = useTranslation(['me', 'common', 'editProfile']);
   const handleChange = (e: React.ChangeEvent<{}>) => {
     e.preventDefault();
   };
@@ -24,9 +24,9 @@ export default function DeleteProfileForm() {
   const handleDeleteAccount = async () => {
     setIsUploadingData(true);
     try {
-      await deleteAuthenticatedRequest("/app/profile", token, logoutUser);
+      await deleteAuthenticatedRequest('/app/profile', token, logoutUser);
       setIsUploadingData(false);
-      logoutUser("http://salesforce.plantingparty.org");
+      logoutUser('http://salesforce.localhost:3000');
     } catch (err) {
       setIsUploadingData(false);
       const serializedErrors = handleError(err as APIError);
@@ -34,7 +34,7 @@ export default function DeleteProfileForm() {
 
       for (const error of serializedErrors) {
         switch (error.message) {
-          case "active_subscriptions":
+          case 'active_subscriptions':
             setisModalOpen(true);
             break;
 
@@ -49,7 +49,7 @@ export default function DeleteProfileForm() {
   };
   const handleSubscriptions = () => {
     setisModalOpen(false);
-    router.push("/profile/recurrency");
+    router.push('/profile/recurrency');
   };
 
   const closeModal = () => {
@@ -59,24 +59,24 @@ export default function DeleteProfileForm() {
 
   return !isModalOpen ? (
     <StyledForm>
-      <div className="inputContainer">
+      <div className='inputContainer'>
         <p>
-          {t("common:deleteAccountMessage", {
-            delete: "Delete",
+          {t('common:deleteAccountMessage', {
+            delete: 'Delete',
           })}
         </p>
-        <p>{t("common:alternativelyEditProfile")}</p>
+        <p>{t('common:alternativelyEditProfile')}</p>
         <TextField
           // placeholder={t('common:deleteAccount')}
-          label={t("common:deleteAccountLabel", { delete: "Delete" })}
-          type="text"
-          variant="outlined"
-          name="addTarget"
+          label={t('common:deleteAccountLabel', { delete: 'Delete' })}
+          type='text'
+          variant='outlined'
+          name='addTarget'
           onCut={handleChange}
           onCopy={handleChange}
           onPaste={handleChange}
           onChange={(e) => {
-            if (e.target.value === "Delete") {
+            if (e.target.value === 'Delete') {
               setcanDeleteAccount(true);
             } else {
               setcanDeleteAccount(false);
@@ -84,29 +84,29 @@ export default function DeleteProfileForm() {
           }}
         ></TextField>
         <p className={styles.deleteConsent}>
-          {t("common:deleteAccountConsent")}
+          {t('common:deleteAccountConsent')}
         </p>
         <p>
-          <strong>{t("common:deleteCondition")}</strong>
+          <strong>{t('common:deleteCondition')}</strong>
         </p>
         <p className={styles.deleteModalWarning}>
-          {t("common:deleteIrreversible", {
+          {t('common:deleteIrreversible', {
             email: user?.email,
           })}
         </p>
       </div>
 
       <Button
-        variant="contained"
-        className="formButton"
+        variant='contained'
+        className='formButton'
         disabled={!canDeleteAccount}
         onClick={() => handleDeleteAccount()}
-        color="error"
+        color='error'
       >
         {isUploadingData ? (
-          <div className={"spinner"}></div>
+          <div className={'spinner'}></div>
         ) : (
-          t("common:delete")
+          t('common:delete')
         )}
       </Button>
     </StyledForm>
@@ -115,9 +115,9 @@ export default function DeleteProfileForm() {
       isOpen={isModalOpen}
       handleContinue={handleSubscriptions}
       handleCancel={closeModal}
-      buttonTitle={t("common:showSubscriptions")}
-      modalTitle={t("common:modalTitle")}
-      modalSubtitle={t("common:modalSubtitle")}
+      buttonTitle={t('common:showSubscriptions')}
+      modalTitle={t('common:modalTitle')}
+      modalSubtitle={t('common:modalSubtitle')}
     />
   );
 }

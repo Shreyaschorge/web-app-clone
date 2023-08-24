@@ -39,8 +39,8 @@ const scheme =
     ? process.env.SCHEME
     : 'https';
 
-// const nextauthUrl = 'http://salesforce.plantingparty.org'
-//   ? `${'http://salesforce.plantingparty.org'}`
+// const nextauthUrl = 'http://salesforce.localhost:3000'
+//   ? `${'http://salesforce.localhost:3000'}`
 //   : `${scheme}://${process.env.VERCEL_URL}`;
 
 const hasAssetPrefix =
@@ -53,7 +53,7 @@ const nextConfig = {
   serverRuntimeConfig: {
     rootDir: __dirname,
   },
-  webpack: (config, options) => {
+  webpack: (config,options) => {
     // In `pages/_app.js`, Sentry is imported from @sentry/browser. While
     // @sentry/node will run in a Node.js environment. @sentry/node will use
     // Node.js-only APIs to catch even more unhandled exceptions.
@@ -206,5 +206,5 @@ const nextConfig = {
 
 module.exports = () => {
   const plugins = [withBundleAnalyzer];
-  return plugins.reduce((config, plugin) => plugin(config), nextConfig);
+  return plugins.reduce((config,plugin) => plugin(config),nextConfig);
 };

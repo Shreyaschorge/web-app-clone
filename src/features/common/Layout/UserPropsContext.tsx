@@ -2,12 +2,12 @@ import {
   useAuth0,
   User as Auth0User,
   RedirectLoginOptions,
-} from "@auth0/auth0-react";
-import { useRouter } from "next/router";
-import React, { FC, useContext } from "react";
-import { getAccountInfo } from "../../../utils/apiRequests/api";
-import { User } from "@planet-sdk/common/build/types/user";
-import { SetState } from "../types/common";
+} from '@auth0/auth0-react';
+import { useRouter } from 'next/router';
+import React, { FC, useContext } from 'react';
+import { getAccountInfo } from '../../../utils/apiRequests/api';
+import { User } from '@planet-sdk/common/build/types/user';
+import { SetState } from '../types/common';
 
 interface UserPropsContextInterface {
   contextLoaded: boolean;
@@ -46,13 +46,13 @@ export const UserPropsProvider: FC = ({ children }) => {
   const [contextLoaded, setContextLoaded] = React.useState<boolean>(false);
   const [token, setToken] = React.useState<string | null>(null);
   const [profile, setUser] = React.useState<User | null>(null);
-  const [userLang, setUserLang] = React.useState<string>("en");
+  const [userLang, setUserLang] = React.useState<string>('en');
   const [isImpersonationModeOn, setIsImpersonationModeOn] =
     React.useState<boolean>(false);
 
   React.useEffect(() => {
-    if (localStorage.getItem("language")) {
-      const userLang = localStorage.getItem("language");
+    if (localStorage.getItem('language')) {
+      const userLang = localStorage.getItem('language');
       if (userLang) setUserLang(userLang);
     }
   }, []);
@@ -68,7 +68,7 @@ export const UserPropsProvider: FC = ({ children }) => {
   }, [isLoading, isAuthenticated]);
 
   const logoutUser = (
-    returnUrl: string | undefined = "http://salesforce.plantingparty.org"
+    returnUrl: string | undefined = 'http://salesforce.localhost:3000'
   ) => {
     logout({ returnTo: returnUrl });
   };
@@ -85,19 +85,19 @@ export const UserPropsProvider: FC = ({ children }) => {
       } else if (res.status === 303) {
         // if 303 -> user doesn not exist in db
         setUser(null);
-        if (typeof window !== "undefined") {
-          router.push("/complete-signup", undefined, { shallow: true });
+        if (typeof window !== 'undefined') {
+          router.push('/complete-signup', undefined, { shallow: true });
         }
       } else if (res.status === 401) {
         // in case of 401 - invalid token: signIn()
         setUser(null);
         setToken(null);
         loginWithRedirect({
-          redirectUri: "http://salesforce.plantingparty.org/login",
-          ui_locales: localStorage.getItem("language") || "en",
+          redirectUri: 'http://salesforce.localhost:3000/login',
+          ui_locales: localStorage.getItem('language') || 'en',
         });
       } else if (res.status === 403) {
-        localStorage.removeItem("impersonationData");
+        localStorage.removeItem('impersonationData');
       } else {
         //any other error
       }
@@ -114,7 +114,7 @@ export const UserPropsProvider: FC = ({ children }) => {
   }, [token]);
 
   React.useEffect(() => {
-    if (localStorage.getItem("impersonationData") !== null) {
+    if (localStorage.getItem('impersonationData') !== null) {
       setIsImpersonationModeOn(true);
     }
   }, [isImpersonationModeOn]);
@@ -145,7 +145,7 @@ export const UserPropsProvider: FC = ({ children }) => {
 export const useUserProps = (): UserPropsContextInterface => {
   const context = useContext(UserPropsContext);
   if (!context) {
-    throw new Error("UserPropsContext must be used within UserPropsProvider ");
+    throw new Error('UserPropsContext must be used within UserPropsProvider ');
   }
   return context;
 };

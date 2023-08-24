@@ -1,17 +1,17 @@
-import { useTranslation } from "next-i18next";
-import React, { ReactElement } from "react";
-import UserLayout from "../../../src/features/common/Layout/UserLayout/UserLayout";
-import { useRouter } from "next/router";
-import ManageProjects from "../../../src/features/user/ManageProjects";
-import { useUserProps } from "../../../src/features/common/Layout/UserPropsContext";
-import AccessDeniedLoader from "../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader";
-import Footer from "../../../src/features/common/Layout/Footer";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import Head from "next/head";
+import { useTranslation } from 'next-i18next';
+import React, { ReactElement } from 'react';
+import UserLayout from '../../../src/features/common/Layout/UserLayout/UserLayout';
+import { useRouter } from 'next/router';
+import ManageProjects from '../../../src/features/user/ManageProjects';
+import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
+import AccessDeniedLoader from '../../../src/features/common/ContentLoaders/Projects/AccessDeniedLoader';
+import Footer from '../../../src/features/common/Layout/Footer';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import Head from 'next/head';
 
 export default function AddProjectType(): ReactElement {
   const router = useRouter();
-  const { t } = useTranslation(["donate", "manageProjects"]);
+  const { t } = useTranslation(['donate', 'manageProjects']);
   const [isPurpose, setIsPurpose] = React.useState(false);
   const { user, contextLoaded, token, loginWithRedirect } = useUserProps();
   const [accessDenied, setAccessDenied] = React.useState(false);
@@ -25,7 +25,7 @@ export default function AddProjectType(): ReactElement {
   React.useEffect(() => {
     async function loadUserData() {
       const usertype = user?.type;
-      if (usertype === "tpo") {
+      if (usertype === 'tpo') {
         setAccessDenied(false);
         setSetupAccess(true);
       } else {
@@ -39,12 +39,12 @@ export default function AddProjectType(): ReactElement {
         loadUserData();
       } else {
         localStorage.setItem(
-          "redirectLink",
-          "/profile/projects/add-project/restoration-project"
+          'redirectLink',
+          '/profile/projects/add-project/restoration-project'
         );
         loginWithRedirect({
-          redirectUri: `http://salesforce.plantingparty.org/login`,
-          ui_locales: localStorage.getItem("language") || "en",
+          redirectUri: `http://salesforce.localhost:3000/login`,
+          ui_locales: localStorage.getItem('language') || 'en',
         });
       }
     }
@@ -61,26 +61,26 @@ export default function AddProjectType(): ReactElement {
   }
 
   return (
-    <div className={"profilePage"}>
+    <div className={'profilePage'}>
       <UserLayout>
         <Head>
-          <title>{t("manageProjects:addNewProject")}</title>
+          <title>{t('manageProjects:addNewProject')}</title>
         </Head>
 
-        <div className="profilePageHeader">
+        <div className='profilePageHeader'>
           <div>
-            <div className={"profilePageTitle"}>
-              {" "}
-              {t("manageProjects:addNewProject")}
+            <div className={'profilePageTitle'}>
+              {' '}
+              {t('manageProjects:addNewProject')}
             </div>
           </div>
         </div>
-        <div className={"add-project-title"}>
+        <div className={'add-project-title'}>
           <p>
-            {t("manageProjects:addProjetDescription")}
+            {t('manageProjects:addProjetDescription')}
             <br />
-            {t("manageProjects:addProjetContact")}
-            <span>{t("manageProjects:supportLink")}</span>
+            {t('manageProjects:addProjetContact')}
+            <span>{t('manageProjects:supportLink')}</span>
           </p>
         </div>
 
@@ -114,7 +114,7 @@ export default function AddProjectType(): ReactElement {
                     )
                     :
                     null} */}
-        {user?.type === "tpo" ? (
+        {user?.type === 'tpo' ? (
           <ManageProjects token={token} />
         ) : (
           <AccessDeniedLoader />
@@ -130,27 +130,27 @@ export async function getStaticProps({ locale }) {
       ...(await serverSideTranslations(
         locale,
         [
-          "bulkCodes",
-          "common",
-          "country",
-          "donate",
-          "donationLink",
-          "editProfile",
-          "giftfunds",
-          "leaderboard",
-          "managePayouts",
-          "manageProjects",
-          "maps",
-          "me",
-          "planet",
-          "planetcash",
-          "redeem",
-          "registerTrees",
-          "tenants",
-          "treemapper",
+          'bulkCodes',
+          'common',
+          'country',
+          'donate',
+          'donationLink',
+          'editProfile',
+          'giftfunds',
+          'leaderboard',
+          'managePayouts',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'planetcash',
+          'redeem',
+          'registerTrees',
+          'tenants',
+          'treemapper',
         ],
         null,
-        ["en", "de", "fr", "es", "it", "pt-BR", "cs"]
+        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
       )),
     },
   };

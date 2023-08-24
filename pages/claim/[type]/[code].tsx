@@ -1,21 +1,21 @@
-import React, { ReactElement } from "react";
-import { useRouter } from "next/router";
-import { postAuthenticatedRequest } from "../../../src/utils/apiRequests/api";
-import { useTranslation } from "next-i18next";
-import { GetStaticPaths } from "next";
-import LandingSection from "../../../src/features/common/Layout/LandingSection";
-import { useUserProps } from "../../../src/features/common/Layout/UserPropsContext";
-import { ErrorHandlingContext } from "../../../src/features/common/Layout/ErrorHandlingContext";
+import React, { ReactElement } from 'react';
+import { useRouter } from 'next/router';
+import { postAuthenticatedRequest } from '../../../src/utils/apiRequests/api';
+import { useTranslation } from 'next-i18next';
+import { GetStaticPaths } from 'next';
+import LandingSection from '../../../src/features/common/Layout/LandingSection';
+import { useUserProps } from '../../../src/features/common/Layout/UserPropsContext';
+import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import {
   RedeemFailed,
   SuccessfullyRedeemed,
-} from "../../../src/features/common/RedeemCode";
-import { RedeemedCodeData } from "../../../src/features/common/types/redeem";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { handleError, APIError, SerializedError } from "@planet-sdk/common";
+} from '../../../src/features/common/RedeemCode';
+import { RedeemedCodeData } from '../../../src/features/common/types/redeem';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { handleError, APIError, SerializedError } from '@planet-sdk/common';
 
 function ClaimDonation(): ReactElement {
-  const { t, ready } = useTranslation(["redeem"]);
+  const { t, ready } = useTranslation(['redeem']);
 
   const router = useRouter();
 
@@ -24,8 +24,8 @@ function ClaimDonation(): ReactElement {
 
   const { errors, setErrors } = React.useContext(ErrorHandlingContext);
 
-  const [errorMessage, setErrorMessage] = React.useState("");
-  const [code, setCode] = React.useState<string>("");
+  const [errorMessage, setErrorMessage] = React.useState('');
+  const [code, setCode] = React.useState<string>('');
   const [redeemedCodeData, setRedeemedCodeData] = React.useState<
     RedeemedCodeData | undefined
   >(undefined);
@@ -35,13 +35,13 @@ function ClaimDonation(): ReactElement {
       router &&
       router.query.type &&
       router.query.code &&
-      typeof router.query.code === "string"
+      typeof router.query.code === 'string'
     ) {
-      if (router.query.type !== "donation" && router.query.type !== "gift") {
-        setErrorMessage(ready ? t("redeem:invalidType") : "");
+      if (router.query.type !== 'donation' && router.query.type !== 'gift') {
+        setErrorMessage(ready ? t('redeem:invalidType') : '');
         setCode(router.query.code);
       } else {
-        setErrorMessage("");
+        setErrorMessage('');
       }
     }
   }, [router, router.query.type, ready]);
@@ -49,11 +49,11 @@ function ClaimDonation(): ReactElement {
     router.push(`/profile/redeem/${code}?inputCode=${true}`);
 
     setRedeemedCodeData(undefined);
-    setErrorMessage("");
+    setErrorMessage('');
   };
 
   const closeRedeem = () => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       router.push(`/`);
     }
   };
@@ -76,15 +76,15 @@ function ClaimDonation(): ReactElement {
         const _serializedErrors: SerializedError[] = [];
         for (const error of serializedErrors) {
           switch (error.message) {
-            case "already_redeemed":
+            case 'already_redeemed':
               _serializedErrors.push({
-                message: t("redeem:alreadyRedeemed"),
+                message: t('redeem:alreadyRedeemed'),
               });
               break;
 
-            case "invalid_code":
+            case 'invalid_code':
               _serializedErrors.push({
-                message: t("redeem:invalidCode"),
+                message: t('redeem:invalidCode'),
               });
               break;
 
@@ -99,7 +99,7 @@ function ClaimDonation(): ReactElement {
   }
 
   React.useEffect(() => {
-    if (router.query.code && typeof router.query.code === "string") {
+    if (router.query.code && typeof router.query.code === 'string') {
       setCode(router.query.code);
     }
   }, [router.query.code]);
@@ -111,11 +111,11 @@ function ClaimDonation(): ReactElement {
     // For this  fetch the link from the storage, clears the storage and then redirects the user using the link
     if (contextLoaded && !user) {
       // store the claim link in localstorage
-      if (typeof window !== "undefined") {
-        localStorage.setItem("redirectLink", window.location.href);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('redirectLink', window.location.href);
         loginWithRedirect({
-          redirectUri: "http://salesforce.plantingparty.org/login",
-          ui_locales: localStorage.getItem("language") || "en",
+          redirectUri: 'http://salesforce.localhost:3000/login',
+          ui_locales: localStorage.getItem('language') || 'en',
         });
       }
     }
@@ -158,7 +158,7 @@ function ClaimDonation(): ReactElement {
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: [],
-    fallback: "blocking",
+    fallback: 'blocking',
   };
 };
 
@@ -168,27 +168,27 @@ export async function getStaticProps({ locale }: any) {
       ...(await serverSideTranslations(
         locale,
         [
-          "bulkCodes",
-          "common",
-          "country",
-          "donate",
-          "donationLink",
-          "editProfile",
-          "giftfunds",
-          "leaderboard",
-          "managePayouts",
-          "manageProjects",
-          "maps",
-          "me",
-          "planet",
-          "planetcash",
-          "redeem",
-          "registerTrees",
-          "tenants",
-          "treemapper",
+          'bulkCodes',
+          'common',
+          'country',
+          'donate',
+          'donationLink',
+          'editProfile',
+          'giftfunds',
+          'leaderboard',
+          'managePayouts',
+          'manageProjects',
+          'maps',
+          'me',
+          'planet',
+          'planetcash',
+          'redeem',
+          'registerTrees',
+          'tenants',
+          'treemapper',
         ],
         null,
-        ["en", "de", "fr", "es", "it", "pt-BR", "cs"]
+        ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
       )),
     },
   };

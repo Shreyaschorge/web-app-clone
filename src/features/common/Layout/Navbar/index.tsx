@@ -1,43 +1,43 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import React from "react";
-import { useTranslation } from "next-i18next";
-import Me from "../../../../../public/assets/images/navigation/Me";
-import MeSelected from "../../../../../public/assets/images/navigation/MeSelected";
-import { ThemeContext } from "../../../../theme/themeContext";
-import themeProperties from "../../../../theme/themeProperties";
-import getImageUrl from "../../../../utils/getImageURL";
-import { useUserProps } from "../UserPropsContext";
-import GetNavBarIcon from "./getNavBarIcon";
-import GetSubMenu from "./getSubMenu";
-import { lang_path } from "../../../../utils/constants/wpLanguages";
-import { ParamsContext } from "../QueryParamsContext";
-import ImpersonationActivated from "../../../user/Settings/ImpersonateUser/ImpersonationActivated";
-import { useTenant } from "../TenantContext";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React from 'react';
+import { useTranslation } from 'next-i18next';
+import Me from '../../../../../public/assets/images/navigation/Me';
+import MeSelected from '../../../../../public/assets/images/navigation/MeSelected';
+import { ThemeContext } from '../../../../theme/themeContext';
+import themeProperties from '../../../../theme/themeProperties';
+import getImageUrl from '../../../../utils/getImageURL';
+import { useUserProps } from '../UserPropsContext';
+import GetNavBarIcon from './getNavBarIcon';
+import GetSubMenu from './getSubMenu';
+import { lang_path } from '../../../../utils/constants/wpLanguages';
+import { ParamsContext } from '../QueryParamsContext';
+import ImpersonationActivated from '../../../user/Settings/ImpersonateUser/ImpersonationActivated';
+import { useTenant } from '../TenantContext';
 
 // used to detect window resize and return the current width of the window
 const useWidth = () => {
   const [width, setWidth] = React.useState(0); // default width, detect on server.
   const handleResize = () => setWidth(window.innerWidth);
   React.useEffect(() => {
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
     handleResize();
-    return () => window.removeEventListener("resize", handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, [handleResize]);
   return width;
 };
 
 export default function NavbarComponent(props: any) {
-  const { t, ready, i18n } = useTranslation(["common"]);
+  const { t, ready, i18n } = useTranslation(['common']);
   const router = useRouter();
   const subMenuPath = {
-    overview: "",
-    childrenAndYouth: "children-youth",
-    trillionTrees: "trillion-trees",
-    yucatan: "yucatan",
-    partners: "partners",
-    changeChocolate: "change-chocolate",
-    stopTalkingStartPlanting: "stop-talking-start-planting",
+    overview: '',
+    childrenAndYouth: 'children-youth',
+    trillionTrees: 'trillion-trees',
+    yucatan: 'yucatan',
+    partners: 'partners',
+    changeChocolate: 'change-chocolate',
+    stopTalkingStartPlanting: 'stop-talking-start-planting',
   };
   const [menu, setMenu] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
@@ -47,7 +47,7 @@ export default function NavbarComponent(props: any) {
   const { tenantConfig } = useTenant();
 
   React.useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       if (window.innerWidth > 767) {
         setMobileWidth(false);
       } else {
@@ -74,15 +74,15 @@ export default function NavbarComponent(props: any) {
   // This function controls the path for the user when they click on Me
   async function gotoUserPage() {
     if (user) {
-      if (typeof window !== "undefined") {
+      if (typeof window !== 'undefined') {
         router.push(`/profile`);
       }
     } else {
       //----------------- To do - redirect to slug -----------------
       // Currently we cannot do that because we don't know the slug of the user
       loginWithRedirect({
-        redirectUri: "http://salesforce.plantingparty.org/login",
-        ui_locales: localStorage.getItem("language") || "en",
+        redirectUri: 'http://salesforce.localhost:3000/login',
+        ui_locales: localStorage.getItem('language') || 'en',
       });
     }
   }
@@ -97,19 +97,19 @@ export default function NavbarComponent(props: any) {
   //   return <p>loading</p>;
   // }
   if (auth0Error) {
-    if (auth0Error.message === "401") {
-      if (typeof window !== "undefined") {
+    if (auth0Error.message === '401') {
+      if (typeof window !== 'undefined') {
         setUser(null);
-        logoutUser("http://salesforce.plantingparty.org/verify-email");
+        logoutUser('http://salesforce.localhost:3000/verify-email');
       }
-    } else if (auth0Error.message === "Invalid state") {
+    } else if (auth0Error.message === 'Invalid state') {
       setUser(null);
     } else {
       if (auth0Error.message) {
         alert(auth0Error.message);
       }
       setUser(null);
-      logoutUser("http://salesforce.plantingparty.org");
+      logoutUser('http://salesforce.localhost:3000');
     }
   }
 
@@ -117,21 +117,21 @@ export default function NavbarComponent(props: any) {
     return user && user.image ? (
       <div
         style={{
-          backgroundColor: "#fff",
-          borderRadius: "50%",
-          height: "27px",
-          width: "27px",
-          border: "1px solid #F2F2F7",
+          backgroundColor: '#fff',
+          borderRadius: '50%',
+          height: '27px',
+          width: '27px',
+          border: '1px solid #F2F2F7',
         }}
       >
         <img
-          src={getImageUrl("profile", "avatar", user.image)}
+          src={getImageUrl('profile', 'avatar', user.image)}
           height='26px'
           width='26px'
-          style={{ borderRadius: "40px" }}
+          style={{ borderRadius: '40px' }}
         />
       </div>
-    ) : router.pathname === "/complete-signup" ||
+    ) : router.pathname === '/complete-signup' ||
       (user && router.pathname === `/t/${user.slug}`) ? (
       <MeSelected color={themeProperties.primaryColor} />
     ) : (
@@ -145,48 +145,48 @@ export default function NavbarComponent(props: any) {
     const links = Object.keys(tenantConfig!.header.items);
     const tenantName = tenantConfig?.tenantName;
     return tenantConfig && links ? (
-      <div className={"menuItems"}>
+      <div className={'menuItems'}>
         {links.map((link) => {
           let SingleLink = tenantConfig.header.items[link];
           const hasSubMenu =
             SingleLink.subMenu && SingleLink.subMenu.length > 0;
           if (SingleLink) {
-            if (link === "me" && SingleLink.visible) {
+            if (link === 'me' && SingleLink.visible) {
               return (
                 <button
-                  id={"navbarActiveIcon"}
+                  id={'navbarActiveIcon'}
                   key={link}
                   onClick={() => gotoUserPage()}
                   className={`linkContainer`}
                 >
-                  <div className={"link_icon"}>
+                  <div className={'link_icon'}>
                     <UserIcon />
                   </div>
                   <p
                     className={
                       router.pathname === SingleLink.onclick
-                        ? "active_icon"
-                        : ""
+                        ? 'active_icon'
+                        : ''
                     }
                   >
                     {user && SingleLink.loggedInTitle
-                      ? t("common:" + SingleLink.loggedInTitle)
-                      : t("common:" + SingleLink.title)}
+                      ? t('common:' + SingleLink.loggedInTitle)
+                      : t('common:' + SingleLink.title)}
                   </p>
                 </button>
               );
             }
             // can be handled by context
-            if (link === "about" && SingleLink.visible) {
+            if (link === 'about' && SingleLink.visible) {
               let aboutOnclick = `${SingleLink.onclick}${
-                (process.env.TENANT === "planet" ||
-                  process.env.TENANT === "ttc") &&
+                (process.env.TENANT === 'planet' ||
+                  process.env.TENANT === 'ttc') &&
                 lang_path[i18n.language]
                   ? lang_path[i18n.language]
-                  : ""
+                  : ''
               }`;
 
-              aboutOnclick = isMobile ? "" : aboutOnclick;
+              aboutOnclick = isMobile ? '' : aboutOnclick;
               SingleLink = {
                 ...SingleLink,
                 onclick: aboutOnclick,
@@ -195,12 +195,12 @@ export default function NavbarComponent(props: any) {
                 SingleLink.subMenu[0].onclick = aboutOnclick;
               }
             }
-            if (link === "shop" && mobileWidth) {
+            if (link === 'shop' && mobileWidth) {
               SingleLink.visible = false;
             }
             return SingleLink.visible ? (
               <div
-                className={`${hasSubMenu ? "subMenu" : ""}`}
+                className={`${hasSubMenu ? 'subMenu' : ''}`}
                 onClick={() => (isMobile && hasSubMenu ? setMenu(!menu) : {})}
                 onMouseOver={() =>
                   hasSubMenu ? setMenu(isMobile ? menu : true) : {}
@@ -210,7 +210,7 @@ export default function NavbarComponent(props: any) {
                 }
                 key={link}
               >
-                <Link href={isMobile && hasSubMenu ? "" : SingleLink.onclick}>
+                <Link href={isMobile && hasSubMenu ? '' : SingleLink.onclick}>
                   <div className={`linkContainer`}>
                     <GetNavBarIcon
                       mainKey={link}
@@ -218,53 +218,53 @@ export default function NavbarComponent(props: any) {
                       item={SingleLink}
                       tenantName={tenantName}
                     />
-                    {link === "donate" ? (
+                    {link === 'donate' ? (
                       <p
                         className={
-                          router.pathname === "/" || router.pathname === "/[p]"
-                            ? "active_icon"
-                            : ""
+                          router.pathname === '/' || router.pathname === '/[p]'
+                            ? 'active_icon'
+                            : ''
                         }
                       >
-                        {t("common:" + SingleLink.title)}
+                        {t('common:' + SingleLink.title)}
                       </p>
                     ) : (
                       <p
                         className={
                           router.pathname === SingleLink.onclick
-                            ? "active_icon"
-                            : ""
+                            ? 'active_icon'
+                            : ''
                         }
                       >
-                        {t("common:" + SingleLink.title)}
+                        {t('common:' + SingleLink.title)}
                       </p>
                     )}
                   </div>
                 </Link>
-                <div className={`subMenuItems ${menu ? "showSubMenu" : ""}`}>
+                <div className={`subMenuItems ${menu ? 'showSubMenu' : ''}`}>
                   {SingleLink.subMenu &&
                     SingleLink.subMenu.length > 0 &&
                     SingleLink.subMenu.map((submenu: any) => {
                       return (
                         <a
                           key={submenu.title}
-                          className={"menuRow"}
+                          className={'menuRow'}
                           href={`https://a.plant-for-the-planet.org/${
                             lang_path[i18n.language]
                               ? lang_path[i18n.language]
-                              : "en"
+                              : 'en'
                           }/${subMenuPath[submenu.title]}`}
                         >
                           <div
                             style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              alignItems: "center",
+                              display: 'flex',
+                              flexDirection: 'row',
+                              alignItems: 'center',
                             }}
                           >
                             <GetSubMenu title={submenu.title} />
-                            <div className={"menuText"}>
-                              {t("common:" + submenu.title)}
+                            <div className={'menuText'}>
+                              {t('common:' + submenu.title)}
                             </div>
                           </div>
                         </a>
@@ -283,7 +283,7 @@ export default function NavbarComponent(props: any) {
     );
   };
 
-  return embed === "true" ? (
+  return embed === 'true' ? (
     <></>
   ) : tenantConfig ? (
     <>
@@ -296,51 +296,51 @@ export default function NavbarComponent(props: any) {
         className={`mainNavContainer`}
         style={{ top: isImpersonationModeOn ? 49 : 0 }}
       >
-        <div className={"top_nav"}>
-          <div className={"brandLogos"}>
+        <div className={'top_nav'}>
+          <div className={'brandLogos'}>
             {tenantConfig.header?.isSecondaryTenant && (
               <div
                 className={
-                  tenantConfig.tenantName === "ttc"
-                    ? "hidePrimaryTenantLogo"
-                    : "primaryTenantLogo"
+                  tenantConfig.tenantName === 'ttc'
+                    ? 'hidePrimaryTenantLogo'
+                    : 'primaryTenantLogo'
                 }
               >
                 <a href={tenantConfig.header?.tenantLogoLink}>
                   <img
-                    className={"tenantLogo desktop"}
+                    className={'tenantLogo desktop'}
                     src={tenantConfig.header.tenantLogoURL}
                   />
                   {tenantConfig.header.mobileLogoURL ? (
                     <img
-                      className={"tenantLogo mobile"}
+                      className={'tenantLogo mobile'}
                       src={tenantConfig.header.mobileLogoURL}
                     />
                   ) : (
                     <img
-                      className={"tenantLogo mobile"}
+                      className={'tenantLogo mobile'}
                       src={tenantConfig.header.tenantLogoURL}
                     />
                   )}
                 </a>
-                <div className={"logo_divider"} />
+                <div className={'logo_divider'} />
               </div>
             )}
 
-            {theme === "theme-light" ? (
+            {theme === 'theme-light' ? (
               <a href='https://a.plant-for-the-planet.org'>
                 <img
-                  className={"tenantLogo"}
+                  className={'tenantLogo'}
                   src={`${process.env.CDN_URL}/logo/svg/planet.svg`}
-                  alt={t("common:about_pftp")}
+                  alt={t('common:about_pftp')}
                 />
               </a>
             ) : (
               <a href='https://a.plant-for-the-planet.org'>
                 <img
-                  className={"tenantLogo"}
+                  className={'tenantLogo'}
                   src={`/assets/images/PlanetDarkLogo.svg`}
-                  alt={t("common:about_pftp")}
+                  alt={t('common:about_pftp')}
                 />
               </a>
             )}
