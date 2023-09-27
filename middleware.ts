@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getTenantSubdomainOrDefault } from './src/utils/db';
 
 export const config = {
-  matcher: ['/', '/all', '/_sites/:path', '/profile', '/profile/history'],
+  matcher: ['/', '/_sites/:path', '/profile', '/profile/history'],
 };
 
 export default async function middleware(req: NextRequest) {
