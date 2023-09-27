@@ -1,11 +1,14 @@
 import React from 'react';
-import LeaderBoard from '../src/tenants/planet/LeaderBoard';
-import { getRequest } from '../src/utils/apiRequests/api';
-import GetLeaderboardMeta from './../src/utils/getMetaTags/GetLeaderboardMeta';
-import { ErrorHandlingContext } from '../src/features/common/Layout/ErrorHandlingContext';
+import LeaderBoard from '../../../src/tenants/planet/LeaderBoard';
+import { getRequest } from '../../../src/utils/apiRequests/api';
+import { ErrorHandlingContext } from '../../../src/features/common/Layout/ErrorHandlingContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { handleError, APIError } from '@planet-sdk/common';
-import { useTenant } from '../src/features/common/Layout/TenantContext';
+import { useTenant } from '../../../src/features/common/Layout/TenantContext';
+import GetLeaderboardMeta from '../../../src/utils/getMetaTags/GetLeaderboardMeta';
+import { getSubdomainPaths } from '../../../src/utils/db';
+import { TenantAppConfig, Tenants } from '@planet-sdk/common/build/types/tenant';
+import tenantConfig from '../../../tenant.config';
 
 interface Props {
   initialized: Boolean;
@@ -84,14 +87,35 @@ export default function Home({ initialized }: Props) {
   );
 }
 
-export async function getStaticProps({ locale }) {
+export async function getStaticPaths() {
+  return {
+    paths: await getSubdomainPaths(),
+    fallback: true, // fallback true allows sites to be generated using ISR
+  };
+}
 
-  
+export async function getStaticProps(props: any) {
+  const response = await fetch(`${process.env.API_ENDPOINT}/app/tenants`);
+
+  const tenants = (await response.json()) as Tenants;
+
+  const tenant = tenants.find(
+    (tenant) => tenant.config.subDomain === props.params.site
+  );
+
+  const _tenantConf = tenantConfig(props.params.site);
+
+  const tenantConf: TenantAppConfig = {
+    ..._tenantConf,
+    tenantID: tenant!.id,
+    customDomain: tenant!.config.customDomain!,
+    auth0ClientId: tenant!.config.auth0ClientId,
+  };
 
   return {
     props: {
       ...(await serverSideTranslations(
-        locale,
+        props.locale,
         [
           'bulkCodes',
           'common',
@@ -115,6 +139,7 @@ export async function getStaticProps({ locale }) {
         null,
         ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
       )),
+      config: tenantConf,
     },
   };
 }
