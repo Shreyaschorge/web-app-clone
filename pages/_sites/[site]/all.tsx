@@ -9,6 +9,7 @@ import GetLeaderboardMeta from '../../../src/utils/getMetaTags/GetLeaderboardMet
 import { getSubdomainPaths } from '../../../src/utils/db';
 import { TenantAppConfig, Tenants } from '@planet-sdk/common/build/types/tenant';
 import tenantConfig from '../../../tenant.config';
+import nextI18nextConfig from '../../../next-i18next.config';
 
 interface Props {
   initialized: Boolean;
@@ -136,10 +137,11 @@ export async function getStaticProps(props: any) {
           'tenants',
           'treemapper',
         ],
-        null,
+        nextI18nextConfig,
         ['en', 'de', 'fr', 'es', 'it', 'pt-BR', 'cs']
       )),
       config: tenantConf,
     },
+    revalidate: 3600,
   };
 }
