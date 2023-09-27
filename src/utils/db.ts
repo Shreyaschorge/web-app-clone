@@ -1,54 +1,58 @@
-import { getRequest } from "./apiRequests/api";
-import { Tenants } from "@planet-sdk/common/build/types/tenant";
+import tenantConfig from '../../tenant.config';
+import { getRequest } from './apiRequests/api';
+import {
+  TenantAppConfig,
+  Tenants,
+} from '@planet-sdk/common/build/types/tenant';
 
 const hostedDomain = [
   {
-    subdomain: "planet",
-    config: { appDomain: "https://www1.plant-for-the-planet.org" },
+    subdomain: 'planet',
+    config: { appDomain: 'https://www1.plant-for-the-planet.org' },
   },
   {
-    subdomain: "salesforce",
-    config: { appDomain: "https://trees.salesforce.com" },
+    subdomain: 'salesforce',
+    config: { appDomain: 'https://trees.salesforce.com' },
   },
-  { subdomain: "pampers", config: { appDomain: "https://wald.pampers.de" } },
+  { subdomain: 'pampers', config: { appDomain: 'https://wald.pampers.de' } },
   {
-    subdomain: "3pleset",
-    config: { appDomain: "https://trees.3pleset.de/" },
-  },
-  {
-    subdomain: "culchacandela",
-    config: { appDomain: "https://wald.culchacandela.de" },
+    subdomain: '3pleset',
+    config: { appDomain: 'https://trees.3pleset.de/' },
   },
   {
-    subdomain: "energizer",
-    config: { appDomain: "https://wald.energizer.de" },
+    subdomain: 'culchacandela',
+    config: { appDomain: 'https://wald.culchacandela.de' },
   },
   {
-    subdomain: "lacoqueta",
-    config: { appDomain: "https://forest.lacoquetakids.com" },
+    subdomain: 'energizer',
+    config: { appDomain: 'https://wald.energizer.de' },
   },
   {
-    subdomain: "nitrosb",
-    config: { appDomain: "https://forest.nitrosnowboards.com" },
+    subdomain: 'lacoqueta',
+    config: { appDomain: 'https://forest.lacoquetakids.com' },
   },
-  { subdomain: "sitex", config: { appDomain: "https://wald.sitex.de" } },
   {
-    subdomain: "ttc",
-    config: { appDomain: "https://www.trilliontreecampaign.org" },
+    subdomain: 'nitrosb',
+    config: { appDomain: 'https://forest.nitrosnowboards.com' },
   },
-  { subdomain: "xiting", config: { appDomain: "https://trees.xiting.de" } },
+  { subdomain: 'sitex', config: { appDomain: 'https://wald.sitex.de' } },
   {
-    subdomain: "weareams",
-    config: { appDomain: "https://trees.startplanting.org" },
+    subdomain: 'ttc',
+    config: { appDomain: 'https://www.trilliontreecampaign.org' },
   },
-  { subdomain: "ulmpflanzt", config: { appDomain: "" } },
-  { subdomain: "interactClub", config: { appDomain: "" } },
-  { subdomain: "senatDerWirtschaft", config: { appDomain: "" } },
+  { subdomain: 'xiting', config: { appDomain: 'https://trees.xiting.de' } },
+  {
+    subdomain: 'weareams',
+    config: { appDomain: 'https://trees.startplanting.org' },
+  },
+  { subdomain: 'ulmpflanzt', config: { appDomain: '' } },
+  { subdomain: 'interactClub', config: { appDomain: '' } },
+  { subdomain: 'senatDerWirtschaft', config: { appDomain: '' } },
 ];
 
 // const DEFAULT_HOST = hostedDomain.find((h) => h.defaultForPreview);
 
-const DEFAULT_TENANT_SUBDOMAIN = "planet";
+const DEFAULT_TENANT_SUBDOMAIN = 'planet';
 
 /**
  * Returns the data of the hostname based on its subdomain or custom domain
@@ -106,11 +110,11 @@ export async function getSubdomainPaths() {
 }
 
 function isSubdomain(domain: string) {
-  const domainParts = domain.split(".");
+  const domainParts = domain.split('.');
 
-  return process.env.NODE_ENV !== "development"
-    ? !domain.startsWith("www") &&
-        !domain.startsWith("www1") &&
+  return process.env.NODE_ENV !== 'development'
+    ? !domain.startsWith('www') &&
+        !domain.startsWith('www1') &&
         domainParts.length > 2
     : domainParts.length > 1;
 }
@@ -140,7 +144,7 @@ export async function getTenantSubdomainOrDefault(
     if (isSubdomain(localSubdomainOrTenantDomain)) {
       subdomain = localSubdomainOrTenantDomain.replace(
         `.${process.env.ROOT_DOMAIN}`,
-        ""
+        ''
       );
     } else {
       subdomain = DEFAULT_TENANT_SUBDOMAIN;
@@ -151,3 +155,32 @@ export async function getTenantSubdomainOrDefault(
 }
 
 export default hostedDomain;
+
+
+/**
+ * 
+ * Return the tenant config based on the subdomain
+ * 
+ * @param subdomain 
+ * @returns TenantAppConfig
+ */
+export const getTenantConfig = async (subdomain: string) => {
+  const response = await fetch(`${process.env.API_ENDPOINT}/app/tenants`);
+
+  const tenants = (await response.json()) as Tenants;
+
+  const tenant = tenants.find(
+    (tenant) => tenant.config.subDomain === subdomain
+  );
+
+  const _tenantConf = tenantConfig(subdomain);
+
+  const tenantConf: TenantAppConfig = {
+    ..._tenantConf,
+    tenantID: tenant!.id,
+    customDomain: tenant!.config.customDomain!,
+    auth0ClientId: tenant!.config.auth0ClientId,
+  };
+
+  return tenantConf;
+};
