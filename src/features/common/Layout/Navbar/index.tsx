@@ -81,7 +81,7 @@ export default function NavbarComponent(props: any) {
       //----------------- To do - redirect to slug -----------------
       // Currently we cannot do that because we don't know the slug of the user
       loginWithRedirect({
-        redirectUri: 'http://salesforce.localhost:3000/login',
+        redirectUri: `${window.location.origin}/login`,
         ui_locales: localStorage.getItem('language') || 'en',
       });
     }

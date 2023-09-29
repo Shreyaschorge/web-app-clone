@@ -501,7 +501,7 @@ function UserLayout(props: any): ReactElement {
             //logout user
             onClick={() => {
               localStorage.removeItem('impersonationData');
-              logoutUser('http://salesforce.localhost:3000');
+              logoutUser(window.location.origin);
             }}
           >
             <LogoutIcon />

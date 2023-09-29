@@ -1,54 +1,52 @@
-import CssBaseline from '@mui/material/CssBaseline';
-import { CacheProvider, EmotionCache } from '@emotion/react';
-import createEmotionCache from '../src/createEmotionCache';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import 'mapbox-gl-compare/dist/mapbox-gl-compare.css';
-import React from 'react';
-import TagManager from 'react-gtm-module';
-import Router from 'next/router';
-import { AppProps } from 'next/app';
-import { Auth0Provider } from '@auth0/auth0-react';
-import '../src/features/projects/styles/MapPopup.scss';
-import '../src/theme/global.scss';
-import './../src/features/projects/styles/Projects.scss';
-import './../src/features/common/Layout/Navbar/Navbar.scss';
-import ThemeProvider from '../src/theme/themeContext';
-import { useTranslation } from 'next-i18next';
-import * as Sentry from '@sentry/node';
-import { RewriteFrames } from '@sentry/integrations';
-import getConfig from 'next/config';
-import MapLayout from '../src/features/projects/components/ProjectsMap';
-import { useRouter } from 'next/router';
-import { storeConfig } from '../src/utils/storeConfig';
-import tenantConfig from '../tenant.config';
-import { browserNotCompatible } from '../src/utils/browsercheck';
-import BrowserNotSupported from '../src/features/common/ErrorComponents/BrowserNotSupported';
-import ProjectPropsProvider, {
-  ProjectPropsContext,
-} from '../src/features/common/Layout/ProjectPropsContext';
-import { UserPropsProvider } from '../src/features/common/Layout/UserPropsContext';
-import PlayButton from '../src/features/common/LandingVideo/PlayButton';
-import ErrorHandlingProvider from '../src/features/common/Layout/ErrorHandlingContext';
-import dynamic from 'next/dynamic';
-import { BulkCodeProvider } from '../src/features/common/Layout/BulkCodeContext';
-import { AnalyticsProvider } from '../src/features/common/Layout/AnalyticsContext';
-import { ThemeProvider as MuiThemeProvider } from '@mui/material';
-import materialTheme from '../src/theme/themeStyles';
-import QueryParamsProvider from '../src/features/common/Layout/QueryParamsContext';
-import { PlanetCashProvider } from '../src/features/common/Layout/PlanetCashContext';
-import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
-import { appWithTranslation } from 'next-i18next';
-import nextI18NextConfig from '../next-i18next.config.js';
-import { TenantProvider } from '../src/features/common/Layout/TenantContext';
+import CssBaseline from "@mui/material/CssBaseline";
+import { CacheProvider, EmotionCache } from "@emotion/react";
+import createEmotionCache from "../src/createEmotionCache";
+import "mapbox-gl/dist/mapbox-gl.css";
+import "mapbox-gl-compare/dist/mapbox-gl-compare.css";
+import React from "react";
+import TagManager from "react-gtm-module";
+import Router from "next/router";
+import App, { AppProps, AppContext, AppInitialProps } from "next/app";
+import { Auth0Provider } from "@auth0/auth0-react";
+import "../src/features/projects/styles/MapPopup.scss";
+import "../src/theme/global.scss";
+import "./../src/features/projects/styles/Projects.scss";
+import "./../src/features/common/Layout/Navbar/Navbar.scss";
+import ThemeProvider from "../src/theme/themeContext";
+import { useTranslation } from "next-i18next";
+import * as Sentry from "@sentry/node";
+import { RewriteFrames } from "@sentry/integrations";
+import getConfig from "next/config";
+import { useRouter } from "next/router";
+import { storeConfig } from "../src/utils/storeConfig";
+import tenantConfig from "../tenant.config";
+import { browserNotCompatible } from "../src/utils/browsercheck";
+import BrowserNotSupported from "../src/features/common/ErrorComponents/BrowserNotSupported";
+import ProjectPropsProvider from "../src/features/common/Layout/ProjectPropsContext";
+import { UserPropsProvider } from "../src/features/common/Layout/UserPropsContext";
+import ErrorHandlingProvider from "../src/features/common/Layout/ErrorHandlingContext";
+import dynamic from "next/dynamic";
+import { BulkCodeProvider } from "../src/features/common/Layout/BulkCodeContext";
+import { AnalyticsProvider } from "../src/features/common/Layout/AnalyticsContext";
+import { ThemeProvider as MuiThemeProvider } from "@mui/material";
+import materialTheme from "../src/theme/themeStyles";
+import QueryParamsProvider from "../src/features/common/Layout/QueryParamsContext";
+import { PlanetCashProvider } from "../src/features/common/Layout/PlanetCashContext";
+import { PayoutsProvider } from "../src/features/common/Layout/PayoutsContext";
+import { appWithTranslation } from "next-i18next";
+import nextI18NextConfig from "../next-i18next.config.js";
+import MapHolder from "../src/features/projects/components/maps/MapHolder";
+
+type AppOwnProps = { hostURL: string };
 
 const VideoContainer = dynamic(
-  () => import('../src/features/common/LandingVideo'),
+  () => import("../src/features/common/LandingVideo"),
   {
     ssr: false,
   }
 );
 
-const Layout = dynamic(() => import('../src/features/common/Layout'), {
+const Layout = dynamic(() => import("../src/features/common/Layout"), {
   ssr: false,
 });
 
@@ -56,11 +54,11 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   const config = getConfig();
   const distDir = `${config.serverRuntimeConfig.rootDir}/.next`;
   Sentry.init({
-    enabled: process.env.NODE_ENV === 'production',
+    enabled: process.env.NODE_ENV === "production",
     integrations: [
       new RewriteFrames({
         iteratee: (frame) => {
-          frame.filename = frame.filename?.replace(distDir, 'app:///_next');
+          frame.filename = frame.filename?.replace(distDir, "app:///_next");
           return frame;
         },
       }),
@@ -97,7 +95,7 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
 
 const onRedirectCallback = (appState: any) => {
   // Use Next.js's Router.replace method to replace the url
-  if (appState) Router.replace(appState?.returnTo || '/');
+  if (appState) Router.replace(appState?.returnTo || "/");
 };
 
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -111,32 +109,30 @@ const PlanetWeb = ({
   Component,
   pageProps,
   emotionCache = clientSideEmotionCache,
-}: MyAppProps) => {
+  hostURL,
+}: MyAppProps & AppOwnProps) => {
   const { i18n } = useTranslation();
   const router = useRouter();
   const [isMap, setIsMap] = React.useState(false);
-  const [currencyCode, setCurrencyCode] = React.useState('');
+  const [currencyCode, setCurrencyCode] = React.useState("");
   const [browserCompatible, setBrowserCompatible] = React.useState(false);
 
-  // Can be handled through context
   const config = tenantConfig();
 
   const tagManagerArgs = {
     gtmId: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
   };
 
-  if (process.env.NODE_ENV !== 'production') {
-    if (process.env.VERCEL_URL && typeof window !== 'undefined') {
-      if (process.env.VERCEL_URL !== window.location.hostname) {
-        router.replace(`https://${process.env.VERCEL_URL}`);
-      }
+  if (process.env.VERCEL_URL && typeof window !== "undefined") {
+    if (process.env.VERCEL_URL !== window.location.hostname) {
+      router.replace(`https://${process.env.VERCEL_URL}`);
     }
   }
 
   const [initialized, setInitialized] = React.useState(false);
 
   React.useEffect(() => {
-    console.log('==> _app', router.pathname);
+    console.log("==>", hostURL);
     storeConfig();
   }, []);
   React.useEffect(() => {
@@ -147,21 +143,20 @@ const PlanetWeb = ({
 
   React.useEffect(() => {
     if (
-      localStorage.getItem('language') !== null &&
+      localStorage.getItem("language") !== null &&
       i18n &&
       i18n.isInitialized
     ) {
-      const languageFromLocalStorage: any = localStorage.getItem('language');
+      const languageFromLocalStorage: any = localStorage.getItem("language");
       i18n.changeLanguage(languageFromLocalStorage);
     }
   }, [i18n, i18n.isInitialized]);
 
   React.useEffect(() => {
     if (
-      router.pathname === '/' ||
-      router.pathname === '/[p]' ||
-      router.pathname === '/[p]/[id]' ||
-      router.pathname === '/_sites/[site]'
+      router.pathname === "/" ||
+      router.pathname === "/[p]" ||
+      router.pathname === "/[p]/[id]"
     ) {
       setIsMap(true);
     } else {
@@ -196,16 +191,16 @@ const PlanetWeb = ({
   const [localShowVideo, setLocalShowVideo] = React.useState(false);
 
   React.useEffect(() => {
-    if (router.pathname === '/') {
-      if (typeof window !== 'undefined') {
-        if (localStorage.getItem('showVideo')) {
-          if (localStorage.getItem('showVideo') === 'true') {
+    if (router.pathname === "/") {
+      if (typeof window !== "undefined") {
+        if (localStorage.getItem("showVideo")) {
+          if (localStorage.getItem("showVideo") === "true") {
             setLocalShowVideo(true);
           } else {
             setLocalShowVideo(false);
           }
         } else {
-          localStorage.setItem('showVideo', 'true');
+          localStorage.setItem("showVideo", "true");
           setLocalShowVideo(true);
         }
       }
@@ -218,8 +213,6 @@ const PlanetWeb = ({
     setshowVideo(localShowVideo);
   }, [localShowVideo]);
 
-  const { project, projects } = React.useContext(ProjectPropsContext);
-
   if (browserCompatible) {
     return <BrowserNotSupported />;
   } else {
@@ -231,14 +224,14 @@ const PlanetWeb = ({
               <div
                 style={
                   showVideo &&
-                  (config.tenantName === 'planet' ||
-                    config.tenantName === 'ttc')
+                  (config.tenantName === "planet" ||
+                    config.tenantName === "ttc")
                     ? {}
-                    : { display: 'none' }
+                    : { display: "none" }
                 }
               >
-                {config.tenantName === 'planet' ||
-                config.tenantName === 'ttc' ? (
+                {config.tenantName === "planet" ||
+                config.tenantName === "ttc" ? (
                   <VideoContainer setshowVideo={setshowVideo} />
                 ) : (
                   <></>
@@ -248,64 +241,44 @@ const PlanetWeb = ({
               <div
                 style={
                   showVideo &&
-                  (config.tenantName === 'planet' ||
-                    config.tenantName === 'ttc')
-                    ? { display: 'none' }
+                  (config.tenantName === "planet" ||
+                    config.tenantName === "ttc")
+                    ? { display: "none" }
                     : {}
                 }
               >
                 <Auth0Provider
                   domain={process.env.AUTH0_CUSTOM_DOMAIN}
                   clientId={process.env.AUTH0_CLIENT_ID}
-                  redirectUri={'http://salesforce.localhost:3000'}
-                  audience={'urn:plant-for-the-planet'}
-                  cacheLocation={'localstorage'}
+                  redirectUri={hostURL}
+                  audience={"urn:plant-for-the-planet"}
+                  cacheLocation={"localstorage"}
                   onRedirectCallback={onRedirectCallback}
                   useRefreshTokens={true}
                 >
-                  <TenantProvider>
-                    <ThemeProvider>
-                      <MuiThemeProvider theme={materialTheme}>
-                        <CssBaseline />
-                        <UserPropsProvider>
-                          <PlanetCashProvider>
-                            <PayoutsProvider>
-                              <Layout>
-                                <ProjectPropsProvider>
-                                  <BulkCodeProvider>
-                                    <AnalyticsProvider>
-                                      {isMap ? (
-                                        <>
-                                          {project ? (
-                                            <MapLayout />
-                                          ) : projects ? (
-                                            <MapLayout />
-                                          ) : null}
-                                          <div
-                                            style={
-                                              config.tenantName === 'planet' ||
-                                              config.tenantName === 'ttc'
-                                                ? {}
-                                                : { display: 'none' }
-                                            }
-                                          >
-                                            <PlayButton
-                                              setshowVideo={setshowVideo}
-                                            />
-                                          </div>
-                                        </>
-                                      ) : null}
-                                      <Component {...ProjectProps} />
-                                    </AnalyticsProvider>
-                                  </BulkCodeProvider>
-                                </ProjectPropsProvider>
-                              </Layout>
-                            </PayoutsProvider>
-                          </PlanetCashProvider>
-                        </UserPropsProvider>
-                      </MuiThemeProvider>
-                    </ThemeProvider>
-                  </TenantProvider>
+                  <ThemeProvider>
+                    <MuiThemeProvider theme={materialTheme}>
+                      <CssBaseline />
+                      <UserPropsProvider>
+                        <PlanetCashProvider>
+                          <PayoutsProvider>
+                            <Layout>
+                              <ProjectPropsProvider>
+                                <BulkCodeProvider>
+                                  <AnalyticsProvider>
+                                    {isMap ? (
+                                      <MapHolder setshowVideo={setshowVideo} />
+                                    ) : null}
+                                    <Component {...ProjectProps} />
+                                  </AnalyticsProvider>
+                                </BulkCodeProvider>
+                              </ProjectPropsProvider>
+                            </Layout>
+                          </PayoutsProvider>
+                        </PlanetCashProvider>
+                      </UserPropsProvider>
+                    </MuiThemeProvider>
+                  </ThemeProvider>
                 </Auth0Provider>
               </div>
             </div>
@@ -314,6 +287,14 @@ const PlanetWeb = ({
       </CacheProvider>
     );
   }
+};
+
+PlanetWeb.getInitialProps = async (
+  context: AppContext
+): Promise<AppOwnProps & AppInitialProps> => {
+  const ctx = await App.getInitialProps(context);
+
+  return { ...ctx, hostURL: `https://${context.ctx.req?.headers.host}` };
 };
 
 export default appWithTranslation(PlanetWeb, nextI18NextConfig);

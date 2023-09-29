@@ -43,7 +43,7 @@ export default function AddProjectType(): ReactElement {
           '/profile/projects/add-project/restoration-project'
         );
         loginWithRedirect({
-          redirectUri: `http://salesforce.localhost:3000/login`,
+          redirectUri: `${window.location.origin}/login`,
           ui_locales: localStorage.getItem('language') || 'en',
         });
       }

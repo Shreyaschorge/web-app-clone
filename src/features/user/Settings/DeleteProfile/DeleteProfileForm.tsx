@@ -26,7 +26,7 @@ export default function DeleteProfileForm() {
     try {
       await deleteAuthenticatedRequest('/app/profile', token, logoutUser);
       setIsUploadingData(false);
-      logoutUser('http://salesforce.localhost:3000');
+      logoutUser(`${window.location.origin}/login`);
     } catch (err) {
       setIsUploadingData(false);
       const serializedErrors = handleError(err as APIError);

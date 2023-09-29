@@ -40,7 +40,7 @@ function VerifyEmailComponent({}: Props): ReactElement {
         id={'verifyEmail'}
         onClick={() =>
           loginWithRedirect({
-            redirectUri: 'http://salesforce.localhost:3000/login',
+            redirectUri: `${window.location.origin}/login`,
             ui_locales: localStorage.getItem('language') || 'en',
           })
         }

@@ -17,7 +17,7 @@ export default function RedeemPopup() {
 
   const sendUserToLogin = () => {
     loginWithRedirect({
-      redirectUri: 'http://salesforce.localhost:3000/login',
+      redirectUri: `${window.location.origin}/login`,
       ui_locales: localStorage.getItem('language') || 'en',
     });
   };

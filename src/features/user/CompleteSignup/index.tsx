@@ -248,7 +248,7 @@ export default function CompleteSignup(): ReactElement | null {
             {/* header */}
             <div className={styles.header}>
               <div
-                onClick={() => logoutUser('http://salesforce.localhost:3000')}
+                onClick={() => logoutUser(window.location.origin)}
                 className={styles.headerBackIcon}
               >
                 <CancelIcon color={styles.primaryFontColor} />

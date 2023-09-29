@@ -114,7 +114,7 @@ function ClaimDonation(): ReactElement {
       if (typeof window !== 'undefined') {
         localStorage.setItem('redirectLink', window.location.href);
         loginWithRedirect({
-          redirectUri: 'http://salesforce.localhost:3000/login',
+          redirectUri: `${window.location.origin}/login`,
           ui_locales: localStorage.getItem('language') || 'en',
         });
       }
