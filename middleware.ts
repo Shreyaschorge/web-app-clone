@@ -21,6 +21,10 @@ export default async function middleware(req: NextRequest) {
 
   const subdomain = await getTenantSubdomainOrDefault(hostname!);
 
+  if (typeof subdomain === typeof NextResponse) {
+    return subdomain;
+  }
+
   // Prevent security issues – users should not be able to canonically access
   // the pages/sites folder and its respective contents.
   if (url.pathname.startsWith(`/_sites`)) {
