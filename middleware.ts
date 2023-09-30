@@ -12,7 +12,7 @@ export default async function middleware(req: NextRequest) {
   const hostname = req.headers.get('host');
 
   if (hostname === 'ttc.plantingparty.org') {
-    NextResponse.redirect('https://www.trilliontreecampaign.org', 301);
+    return NextResponse.redirect('https://www.trilliontreecampaign.org', 301);
   }
 
   // If localhost, assign the host value manually
