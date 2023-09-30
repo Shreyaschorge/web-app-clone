@@ -21,7 +21,7 @@ export default async function middleware(req: NextRequest) {
 
   const subdomain = await getTenantSubdomainOrDefault(hostname!);
 
-  if (typeof subdomain === typeof NextResponse) {
+  if ( subdomain instanceof NextResponse ) {
     return subdomain;
   }
 
