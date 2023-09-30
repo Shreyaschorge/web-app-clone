@@ -11,6 +11,10 @@ export default async function middleware(req: NextRequest) {
   // Get hostname (e.g. vercel.com, test.vercel.app, etc.)
   const hostname = req.headers.get('host');
 
+  if (hostname === 'ttc.plantingparty.org') {
+    NextResponse.redirect('https://www.trilliontreecampaign.org', 301);
+  }
+
   // If localhost, assign the host value manually
   // If prod, get the custom domain/subdomain value by removing the root URL
   // (in the case of "test.vercel.app", "vercel.app" is the root URL)
