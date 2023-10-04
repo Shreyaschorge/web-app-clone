@@ -140,6 +140,7 @@ const PlanetWeb = ({
 
   React.useEffect(() => {
     console.log('==>', pageProps);
+    console.log('==>', pageProps.hostURL);
     console.log('==> _app', router.pathname);
     storeConfig();
   }, []);
@@ -227,7 +228,7 @@ const PlanetWeb = ({
   if (browserCompatible) {
     return <BrowserNotSupported />;
   } else {
-    return (
+    return pageProps.hostURL ? (
       <CacheProvider value={emotionCache}>
         <ErrorHandlingProvider>
           <QueryParamsProvider>
@@ -316,6 +317,8 @@ const PlanetWeb = ({
           </QueryParamsProvider>
         </ErrorHandlingProvider>
       </CacheProvider>
+    ) : (
+      <></>
     );
   }
 };
