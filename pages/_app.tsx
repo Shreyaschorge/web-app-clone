@@ -228,7 +228,7 @@ const PlanetWeb = ({
   if (browserCompatible) {
     return <BrowserNotSupported />;
   } else {
-    return pageProps.hostURL ? (
+    return pageProps.host ? (
       <CacheProvider value={emotionCache}>
         <ErrorHandlingProvider>
           <QueryParamsProvider>
@@ -341,6 +341,7 @@ PlanetWeb.getInitialProps = async (
   const pageProps = {
     ...ctx.pageProps,
     hostURL: `https://${context.ctx.req?.headers.host}`,
+    host: context.ctx.req?.headers.host,
     _config: {
       auth0ClientId: 'abc', // Replace with the actual value
     },
