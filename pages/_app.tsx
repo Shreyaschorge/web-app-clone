@@ -113,8 +113,7 @@ export interface MyAppProps extends AppProps {
 const PlanetWeb = ({
   Component,
   pageProps,
-  emotionCache = clientSideEmotionCache,
-  hostURL,
+  emotionCache = clientSideEmotionCache
 }: MyAppProps & AppOwnProps) => {
   const { i18n } = useTranslation();
   const router = useRouter();
@@ -140,7 +139,7 @@ const PlanetWeb = ({
   const [initialized, setInitialized] = React.useState(false);
 
   React.useEffect(() => {
-    console.log('==>', hostURL);
+    console.log('==>', pageProps);
     console.log('==> _app', router.pathname);
     storeConfig();
   }, []);
