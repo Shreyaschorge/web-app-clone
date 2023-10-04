@@ -261,7 +261,7 @@ const PlanetWeb = ({
                 <Auth0Provider
                   domain={process.env.AUTH0_CUSTOM_DOMAIN}
                   clientId={process.env.AUTH0_CLIENT_ID}
-                  redirectUri={hostURL}
+                  redirectUri={pageProps.hostURL}
                   audience={'urn:plant-for-the-planet'}
                   cacheLocation={'localstorage'}
                   onRedirectCallback={onRedirectCallback}
