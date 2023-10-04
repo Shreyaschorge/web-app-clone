@@ -113,7 +113,7 @@ export interface MyAppProps extends AppProps {
 const PlanetWeb = ({
   Component,
   pageProps,
-  emotionCache = clientSideEmotionCache
+  emotionCache = clientSideEmotionCache,
 }: MyAppProps & AppOwnProps) => {
   const { i18n } = useTranslation();
   const router = useRouter();
@@ -330,6 +330,10 @@ PlanetWeb.getInitialProps = async (
   const subdomain = await getTenantSubdomainOrDefault(
     host ?? 'https://www1.plant-for-the-planet.org'
   );
+
+  console.log('ctx', ctx);
+  console.log('host', host);
+  console.log('subdomain', subdomain);
 
   const pageProps = {
     ...ctx.pageProps,
