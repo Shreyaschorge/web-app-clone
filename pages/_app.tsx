@@ -40,8 +40,9 @@ import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
 import { appWithTranslation } from 'next-i18next';
 import nextI18NextConfig from '../next-i18next.config.js';
 import { TenantProvider } from '../src/features/common/Layout/TenantContext';
+import { getTenantSubdomainOrDefault } from '../src/utils/db';
 
-type AppOwnProps = { hostURL: string };
+type AppOwnProps = { hostURL: string; _config: { auth0ClientId: string } };
 
 const VideoContainer = dynamic(
   () => import('../src/features/common/LandingVideo'),
@@ -325,7 +326,18 @@ PlanetWeb.getInitialProps = async (
 ): Promise<AppOwnProps & AppInitialProps> => {
   const ctx = await App.getInitialProps(context);
 
-  return { ...ctx, hostURL: `https://${context.ctx.req?.headers.host}` };
+  const subdomain = await getTenantSubdomainOrDefault(context.ctx.req?.headers.host)
+
+  const pageProps = {
+    ...ctx.pageProps,
+    hostURL: `https://${context.ctx.req?.headers.host}`,
+    _config: {
+      auth0ClientId: 'abc', // Replace with the actual value
+    },
+    subdomain
+  };
+
+  return { ...ctx, pageProps } as AppOwnProps & AppInitialProps;
 };
 
 export default appWithTranslation(PlanetWeb, nextI18NextConfig);
