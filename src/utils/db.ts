@@ -124,9 +124,9 @@ export async function getTenantSubdomainOrDefault(
   localSubdomainOrTenantDomain: string
 ) {
 
-  if (localSubdomainOrTenantDomain === 'ttc.plantingparty.org') {
-    return NextResponse.redirect('https://www.trilliontreecampaign.org', 301);
-  }
+  // if (localSubdomainOrTenantDomain === 'ttc.plantingparty.org') {
+  //   return NextResponse.redirect('https://www.trilliontreecampaign.org', 301);
+  // }
 
   const response = await fetch(`${process.env.API_ENDPOINT}/app/tenants`);
 
