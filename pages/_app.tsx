@@ -6,7 +6,7 @@ import 'mapbox-gl-compare/dist/mapbox-gl-compare.css';
 import React from 'react';
 import TagManager from 'react-gtm-module';
 import Router from 'next/router';
-import  App, { AppProps, AppContext, AppInitialProps } from 'next/app';
+import App, { AppProps, AppContext, AppInitialProps } from 'next/app';
 import { Auth0Provider } from '@auth0/auth0-react';
 import '../src/features/projects/styles/MapPopup.scss';
 import '../src/theme/global.scss';
@@ -114,7 +114,7 @@ const PlanetWeb = ({
   Component,
   pageProps,
   emotionCache = clientSideEmotionCache,
-  hostURL
+  hostURL,
 }: MyAppProps & AppOwnProps) => {
   const { i18n } = useTranslation();
   const router = useRouter();
@@ -326,7 +326,11 @@ PlanetWeb.getInitialProps = async (
 ): Promise<AppOwnProps & AppInitialProps> => {
   const ctx = await App.getInitialProps(context);
 
-  const subdomain = await getTenantSubdomainOrDefault(context.ctx.req?.headers.host)
+  const host = context.ctx.req?.headers.host;
+
+  const subdomain = await getTenantSubdomainOrDefault(
+    host ?? 'https://www1.plant-for-the-planet.org'
+  );
 
   const pageProps = {
     ...ctx.pageProps,
@@ -334,7 +338,7 @@ PlanetWeb.getInitialProps = async (
     _config: {
       auth0ClientId: 'abc', // Replace with the actual value
     },
-    subdomain
+    subdomain,
   };
 
   return { ...ctx, pageProps } as AppOwnProps & AppInitialProps;
