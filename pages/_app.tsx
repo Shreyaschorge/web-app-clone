@@ -326,12 +326,12 @@ const PlanetWeb = ({
   }
 };
 
-PlanetWeb.getInitialProps = async ({
-  ctx,
-}: AppContext): Promise<AppOwnProps & AppInitialProps> => {
-  // const ctx = await App.getInitialProps(context);
+PlanetWeb.getInitialProps = async (
+  context: AppContext
+): Promise<AppOwnProps & AppInitialProps> => {
+  const ctx = await App.getInitialProps(context);
 
-  const host = ctx.req?.headers.host;
+  const host = context.ctx.req?.headers.host;
 
   const subdomain = await getTenantSubdomainOrDefault(
     host ?? 'https://www1.plant-for-the-planet.org'
@@ -342,16 +342,16 @@ PlanetWeb.getInitialProps = async ({
   console.log('subdomain', subdomain);
 
   const pageProps = {
-    // ...ctx.pageProps,
-    hostURL: `https://${ctx.req?.headers.host}`,
-    host: ctx.req?.headers.host,
+    ...ctx.pageProps,
+    hostURL: `https://${context.ctx.req?.headers.host}`,
+    host: context.ctx.req?.headers.host,
     _config: {
       auth0ClientId: 'abc', // Replace with the actual value
     },
     subdomain,
   };
 
-  return { pageProps } as AppOwnProps & AppInitialProps;
+  return { ...ctx, pageProps } as AppOwnProps & AppInitialProps;
 };
 
 export default appWithTranslation(PlanetWeb, nextI18NextConfig);
