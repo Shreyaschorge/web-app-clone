@@ -228,7 +228,7 @@ const PlanetWeb = ({
   if (browserCompatible) {
     return <BrowserNotSupported />;
   } else {
-    return pageProps.host ? (
+    return (
       <CacheProvider value={emotionCache}>
         <ErrorHandlingProvider>
           <QueryParamsProvider>
@@ -317,9 +317,7 @@ const PlanetWeb = ({
           </QueryParamsProvider>
         </ErrorHandlingProvider>
       </CacheProvider>
-    ) : (
-      <></>
-    );
+    ) 
   }
 };
 
