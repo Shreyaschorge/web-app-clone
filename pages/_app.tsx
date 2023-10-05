@@ -139,8 +139,13 @@ const PlanetWeb = ({
   const [initialized, setInitialized] = React.useState(false);
 
   React.useEffect(() => {
-    console.log('==>', pageProps);
-    console.log('==>', pageProps.hostURL);
+    if (pageProps.host) {
+      console.log('==>', pageProps);
+      console.log('==>', pageProps.hostURL);
+    }
+  }, [pageProps.host]);
+
+  React.useEffect(() => {
     console.log('==> _app', router.pathname);
     storeConfig();
   }, []);
@@ -317,13 +322,13 @@ const PlanetWeb = ({
           </QueryParamsProvider>
         </ErrorHandlingProvider>
       </CacheProvider>
-    ) 
+    );
   }
 };
 
-PlanetWeb.getInitialProps = async (
-  {ctx}: AppContext
-): Promise<AppOwnProps & AppInitialProps> => {
+PlanetWeb.getInitialProps = async ({
+  ctx,
+}: AppContext): Promise<AppOwnProps & AppInitialProps> => {
   // const ctx = await App.getInitialProps(context);
 
   const host = ctx.req?.headers.host;
