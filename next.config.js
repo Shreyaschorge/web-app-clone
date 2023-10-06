@@ -122,6 +122,7 @@ const nextConfig = {
     WIDGET_URL: process.env.WIDGET_URL,
     CONFIG_URL: process.env.CONFIG_URL,
     ENABLE_ANALYTICS: DB_CONN_URL ? true : false,
+    ROOT_DOMAIN: process.env.ROOT_DOMAIN
   },
   trailingSlash: false,
   reactStrictMode: true,

@@ -40,7 +40,7 @@ import { PayoutsProvider } from '../src/features/common/Layout/PayoutsContext';
 import { appWithTranslation } from 'next-i18next';
 import nextI18NextConfig from '../next-i18next.config.js';
 import { TenantProvider } from '../src/features/common/Layout/TenantContext';
-import { getTenantSubdomainOrDefault } from '../src/utils/db';
+import { getTenantConfig, getTenantSubdomainOrDefault } from '../src/utils/db';
 import { Tenants } from '@planet-sdk/common/build/types/tenant';
 
 type AppOwnProps = { hostURL: string; _config: { auth0ClientId: string } };
@@ -121,6 +121,30 @@ const PlanetWeb = ({
   const [isMap, setIsMap] = React.useState(false);
   const [currencyCode, setCurrencyCode] = React.useState('');
   const [browserCompatible, setBrowserCompatible] = React.useState(false);
+
+  const [_conf, set_conf] = React.useState<TenantAppConfig | undefined>();
+
+  const fetchTenantConfig = async () => {
+    if (window !== undefined) {
+      const subdomain = await getTenantSubdomainOrDefault(
+        window.location.origin ?? 'https://www1.plant-for-the-planet.org'
+      );
+
+      const conf = await getTenantConfig(subdomain);
+
+      set_conf(conf);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchTenantConfig();
+  }, []);
+
+  React.useEffect(() => {
+    if (_conf) {
+      console.log('_conf', _conf);
+    }
+  }, [_conf]);
 
   // Can be handled through context
   const config = tenantConfig();
