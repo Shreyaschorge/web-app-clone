@@ -346,8 +346,6 @@ PlanetWeb.getInitialProps = async (
   console.log('host', host);
   console.log('subdomain', subdomain);
 
-  fetch;
-
   const pageProps = {
     ...ctx.pageProps,
     hostURL: `https://${context.ctx.req?.headers.host}`,
