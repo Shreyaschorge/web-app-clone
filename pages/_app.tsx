@@ -41,7 +41,7 @@ import { appWithTranslation } from 'next-i18next';
 import nextI18NextConfig from '../next-i18next.config.js';
 import { TenantProvider } from '../src/features/common/Layout/TenantContext';
 import { getTenantConfig, getTenantSubdomainOrDefault } from '../src/utils/db';
-import { Tenants } from '@planet-sdk/common/build/types/tenant';
+import { TenantAppConfig, Tenants } from '@planet-sdk/common/build/types/tenant';
 
 type AppOwnProps = { hostURL: string; _config: { auth0ClientId: string } };
 
@@ -162,6 +162,8 @@ const PlanetWeb = ({
   }
 
   const [initialized, setInitialized] = React.useState(false);
+
+  console.log('pageProps', pageProps);
 
   React.useEffect(() => {
     if (pageProps.host) {
