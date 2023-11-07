@@ -160,6 +160,21 @@ export async function getTenantSubdomainOrDefault(
   return subdomain;
 }
 
+export async function getTenantSlug(host: string) {
+  // TODO - use cached api response
+  const response = await fetch(`${process.env.API_ENDPOINT}/app/tenants`);
+
+  const tenants = (await response.json()) as Tenants;
+
+  const tenant = tenants.find((tenant) =>
+    tenant.config.customDomain
+      ? tenant.config.customDomain.includes(host)
+      : tenant.config.appDomain.includes(host)
+  );
+
+  return tenant?.config.subDomain ?? DEFAULT_TENANT_SUBDOMAIN;
+}
+
 export default hostedDomain;
 
 
