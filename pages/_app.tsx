@@ -363,10 +363,6 @@ PlanetWeb.getInitialProps = async (
 
   const host = context.ctx.req?.headers.host;
 
-  const response = await fetch(`${process.env.API_ENDPOINT}/app/tenants`);
-
-  const tenantsList = (await response.json()) as Tenants;
-
   const subdomain = await getTenantSubdomainOrDefault(
     host ?? 'https://www1.plant-for-the-planet.org'
   );
@@ -382,8 +378,7 @@ PlanetWeb.getInitialProps = async (
     _config: {
       auth0ClientId: 'abc', // Replace with the actual value
     },
-    subdomain,
-    tenantsList,
+    subdomain: `-> ${subdomain}`,
   };
 
   return { ...ctx, pageProps } as AppOwnProps & AppInitialProps;
