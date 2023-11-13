@@ -41,7 +41,10 @@ import { appWithTranslation } from 'next-i18next';
 import nextI18NextConfig from '../next-i18next.config.js';
 import { TenantProvider } from '../src/features/common/Layout/TenantContext';
 import { getTenantConfig, getTenantSubdomainOrDefault } from '../src/utils/db';
-import { TenantAppConfig, Tenants } from '@planet-sdk/common/build/types/tenant';
+import {
+  TenantAppConfig,
+  Tenants,
+} from '@planet-sdk/common/build/types/tenant';
 
 type AppOwnProps = { hostURL: string; _config: { auth0ClientId: string } };
 
@@ -368,9 +371,9 @@ PlanetWeb.getInitialProps = async (
     host ?? 'https://www1.plant-for-the-planet.org'
   );
 
-  console.log('ctx', ctx);
-  console.log('host', host);
-  console.log('subdomain', subdomain);
+  // console.log('ctx', ctx);
+  console.log('host: ', host);
+  // console.log('subdomain', subdomain);
 
   const pageProps = {
     ...ctx.pageProps,
